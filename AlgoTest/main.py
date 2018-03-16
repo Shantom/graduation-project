@@ -1,5 +1,10 @@
 import numpy as np
 
+test = True
+T = ''
+if test:
+    T = 'T'
+
 
 class User:
     def __init__(self, userID, name='unknown'):
@@ -48,7 +53,7 @@ def leadInMovies():
     genreSet = set()
     movieType = []
     movieList = []
-    with open('E:\\杂项\\毕业设计\\MovieLens\\movies.csv') as movies:
+    with open('E:\\杂项\\毕业设计\\MovieLens\\movies' + T + '.csv') as movies:
         movies.readline()
         for line in movies:
             movieID = line.split(',')[0]
@@ -78,7 +83,7 @@ def leadInRatings():
     global userIDs
     userSet = set()
     userRatings = []
-    with open('E:\\杂项\\毕业设计\\MovieLens\\ratings.csv') as ratings:
+    with open('E:\\杂项\\毕业设计\\MovieLens\\ratings' + T + '.csv') as ratings:
         ratings.readline()
         for line in ratings:
             userID = line.split(',')[0]
@@ -116,12 +121,15 @@ U_UM = normalize(W_UM)  # 行归一化
 U_MU = normalize(W_MU)
 
 # 元路径UMGM，相遇在G
-# RM_UMG = U_UM * U_MG
-# RM_GM = U_MG
-# result = RM_UMG * RM_GM.T
-# print('U_UM:\n', U_UM)
-# print('U_MG:\n', U_MG)
-# print('U_GM:\n', U_GM)
+RM_UMG = U_UM * U_MG
+RM_GM = U_MG
+
+
+numerator = RM_UMG * RM_GM.T
+denumerator = (np.linalg.norm(RM_UMG) * np.linalg.norm(RM_GM)) ** .5
+result = numerator / denumerator
+print(result)
+
 
 # # 元路径UMGM，相遇在M1
 # RM_UM = U_UM
@@ -129,4 +137,3 @@ U_MU = normalize(W_MU)
 # result = RM_UM * RM_MGM.T
 
 # print('result:\n', result.shape)
-print(userCount, movieCount)
