@@ -40,6 +40,8 @@ def normalize(matrix):
                 matrix_copy[row, col] /= rowSum
     return matrix_copy
 
+def herasim():
+
 
 movieIDs = []  # 存放movieID
 genreIDs = []  # 存放genreID
