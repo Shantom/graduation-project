@@ -6,30 +6,6 @@ if test:
     T = 'T'
 
 
-class User:
-    def __init__(self, userID, name='unknown'):
-        self.name = name
-        self.userID = userID
-        self.ratings = []
-
-
-class Movie:
-    def __init__(self, movieid, name='unknown'):
-        self.name = name
-        self.movieid = movieid
-        self.users = []
-        self.genres = []
-        pass
-
-
-class Genre:
-    def __init__(self, name='unknown'):
-        self.name = name
-        self.movies = []
-
-    pass
-
-
 def normalize(matrix):
     matrix_copy = np.mat(np.copy(matrix))
     rowCount, colCount = matrix_copy.shape
@@ -40,7 +16,9 @@ def normalize(matrix):
                 matrix_copy[row, col] /= rowSum
     return matrix_copy
 
+
 def herasim():
+    pass
 
 
 movieIDs = []  # 存放movieID
@@ -105,37 +83,33 @@ def leadInRatings():
         rating = float(item[2])
         userTransMovie[userID, movieID] = rating
     userTransMovie = np.mat(userTransMovie)
-    print(type(userTransMovie))
     return userTransMovie
 
 
 W_MG = leadInMovies()
 W_GM = W_MG.T
-movieCount = len(movieIDs)
-genreCount = len(genreIDs)
-U_MG = normalize(W_MG)  # 行归一化
+U_MG = normalize(W_MG)  # 转成概率矩阵
 U_GM = normalize(W_GM)
 
 W_UM = leadInRatings()
 W_MU = W_UM.T
-userCount = len(userIDs)
-U_UM = normalize(W_UM)  # 行归一化
+U_UM = normalize(W_UM)  # 转成概率矩阵
 U_MU = normalize(W_MU)
 
-# 元路径UMGM，相遇在G
-RM_UMG = U_UM * U_MG
-RM_GM = U_MG
+movieCount = len(movieIDs)
+genreCount = len(genreIDs)
+userCount = len(userIDs)
 
+S = np.mat(np.zeros((userCount, movieCount)))
+
+# 元路径UMGM，相遇在G
+RM_UMG = U_UM * U_MG  # U->M->G的概率矩阵
+RM_GM = U_MG  # G<-M的概率矩阵
 
 numerator = RM_UMG * RM_GM.T
-denumerator = (np.linalg.norm(RM_UMG) * np.linalg.norm(RM_GM)) ** .5
-result = numerator / denumerator
-print(result)
+for i in range(RM_UMG.shape[0]):
+    for j in range(RM_GM.shape[1]):
+        denumerator = np.linalg.norm(RM_UMG[i]) * np.linalg.norm(RM_GM[j])
+        S[i, j] += numerator[i, j] / denumerator
 
-
-# # 元路径UMGM，相遇在M1
-# RM_UM = U_UM
-# RM_MGM = U_MG * U_GM
-# result = RM_UM * RM_MGM.T
-
-# print('result:\n', result.shape)
+print(S)
