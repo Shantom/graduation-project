@@ -1,6 +1,6 @@
 import numpy as np
 
-test = True
+test = False
 T = ''
 if test:
     T = 'T'
@@ -12,7 +12,8 @@ class HeraSim:
         genreIDs = []  # 存放genreID
         userIDs = []  # 存放userID
 
-    def normalize(self, matrix):
+    @staticmethod
+    def normalize(matrix):
         matrix_copy = np.mat(np.copy(matrix))
         rowCount, colCount = matrix_copy.shape
         for row in range(rowCount):
@@ -92,21 +93,30 @@ class HeraSim:
         self.genreCount = len(self.genreIDs)
         self.userCount = len(self.userIDs)
 
-    def start(self):
+    def start(self, path='UMGM'):
         self.preProcess()
+        BRMs = [np.mat(np.eye(self.movieCount))]
+        FRMs = [np.mat(np.eye(self.userCount))]
+        Bs, Fs = [], []
+        if path == 'UMGM':
+            Bs = [self.U_MG, self.U_GM, self.U_MU]
+            Fs = [self.U_UM, self.U_MG, self.U_GM]
+
+        for i in range(1, len(path)):
+            BRMs.append(BRMs[i - 1] * Bs[i - 1])
+            FRMs.append(FRMs[i - 1] * Fs[i - 1])
+
         S = np.mat(np.zeros((self.userCount, self.movieCount)))
 
-        # 元路径UMGM，相遇在G
-        RM_UMG = self.U_UM * self.U_MG  # U->M->G的概率矩阵
-        RM_GM = self.U_MG  # G<-M的概率矩阵
+        for k in range(len(path)):
 
-        numerator = RM_UMG * RM_GM.T
-        for i in range(RM_UMG.shape[0]):
-            for j in range(RM_GM.shape[1]):
-                denominator = np.linalg.norm(RM_UMG[i]) * np.linalg.norm(RM_GM[j])
-                S[i, j] += numerator[i, j] / denominator
-
-        print(S)
+            numerator = FRMs[k] * BRMs[len(path) - k - 1].T
+            for i in range(FRMs[k].shape[0]):
+                for j in range(BRMs[len(path) - k - 1].shape[1]):
+                    denominator = np.linalg.norm(FRMs[k][i]) * np.linalg.norm(BRMs[len(path) - k - 1][j])
+                    S[i, j] += numerator[i, j] / denominator
+        S/=len(path)
+        # print(S)
 
 
 H = HeraSim()
