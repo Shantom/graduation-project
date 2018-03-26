@@ -1,4 +1,7 @@
 import numpy as np
+import datetime
+
+starttime = datetime.datetime.now()
 
 test = False
 T = ''
@@ -115,9 +118,21 @@ class HeraSim:
                 for j in range(BRMs[len(path) - k - 1].shape[1]):
                     denominator = np.linalg.norm(FRMs[k][i]) * np.linalg.norm(BRMs[len(path) - k - 1][j])
                     S[i, j] += numerator[i, j] / denominator
-        S/=len(path)
-        # print(S)
+        S /= len(path)
+        return S
 
 
 H = HeraSim()
-H.start()
+S = H.start()
+with open('output.csv', 'w') as file:
+    movies = [''] + H.movieIDs
+    movieStr = ','.join(movies)
+    file.write(movieStr + '\n')
+    for i in range(len(H.userIDs)):
+        ratings = [H.userIDs[i]] + S[i].tolist()[0]
+        ratings = list(map(str, ratings))
+        ratingStr = ','.join(ratings)
+        file.write(ratingStr + '\n')
+
+endtime = datetime.datetime.now()
+print((endtime - starttime).seconds)
