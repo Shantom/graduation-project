@@ -11,9 +11,9 @@ if test:
 
 class HeraSim:
     def __init__(self):
-        movieIDs = []  # 存放movieID
-        genreIDs = []  # 存放genreID
-        userIDs = []  # 存放userID
+        self.movieIDs = []  # 存放movieID
+        self.genreIDs = []  # 存放genreID
+        self.userIDs = []  # 存放userID
 
     @staticmethod
     def normalize(matrix):
@@ -27,24 +27,19 @@ class HeraSim:
         return matrix_copy
 
     def leadInMovies(self):
-        movieSet = set()
         genreSet = set()
         movieType = []
-        movieList = []
-        with open('E:\\杂项\\毕业设计\\MovieLens\\movies' + T + '.csv') as movies:
+        with open('in/movies' + T + '.csv') as movies:
             movies.readline()
             for line in movies:
                 movieID = line.split(',')[0]
-                name = line.split(',')[1]
                 genres = line.split(',')[2]
                 genres = genres.strip().split('|')
                 for genre in genres:
                     movieType.append([movieID, genre])
-                movieList.append([movieID, name])
-                movieSet.add(movieID)
+                self.movieIDs.append(movieID)
                 genreSet.update(genres)
 
-        self.movieIDs = sorted(list(movieSet))
         movieCount = len(self.movieIDs)
         self.genreIDs = sorted(list(genreSet))
         genreCount = len(self.genreIDs)
@@ -57,22 +52,21 @@ class HeraSim:
         return movieTransGenre
 
     def leadInRatings(self):
-        userSet = set()
         userRatings = []
-        with open('E:\\杂项\\毕业设计\\MovieLens\\ratings' + T + '.csv') as ratings:
+        with open('in/ratings' + T + '.csv') as ratings:
             ratings.readline()
             for line in ratings:
                 userID = line.split(',')[0]
                 movieID = line.split(',')[1]
                 rating = line.split(',')[2]
-                userSet.add(userID)
+                if userID not in self.userIDs:
+                    self.userIDs.append(userID)
                 userRatings.append([userID, movieID, rating])
-        self.userIDs = sorted(list(userSet))
         userCount = len(self.userIDs)
         movieCount = len(self.movieIDs)
 
         userTransMovie = np.zeros((userCount, movieCount))
-        userTransMovie.fill(0)
+        # userTransMovie.fill(0)
         for item in userRatings:
             userID = self.userIDs.index(item[0])
             movieID = self.movieIDs.index(item[1])
@@ -96,6 +90,7 @@ class HeraSim:
         self.genreCount = len(self.genreIDs)
         self.userCount = len(self.userIDs)
 
+
     def start(self, path='UMGM'):
         self.preProcess()
         BRMs = [np.mat(np.eye(self.movieCount))]
@@ -112,19 +107,21 @@ class HeraSim:
         S = np.mat(np.zeros((self.userCount, self.movieCount)))
 
         for k in range(len(path)):
-
             numerator = FRMs[k] * BRMs[len(path) - k - 1].T
             for i in range(FRMs[k].shape[0]):
                 for j in range(BRMs[len(path) - k - 1].shape[1]):
                     denominator = np.linalg.norm(FRMs[k][i]) * np.linalg.norm(BRMs[len(path) - k - 1][j])
-                    S[i, j] += numerator[i, j] / denominator
+                    if denominator != 0:
+                        S[i, j] += numerator[i, j] / denominator
+                    else:
+                        print('zero division!')
         S /= len(path)
         return S
 
 
 H = HeraSim()
 S = H.start()
-with open('output.csv', 'w') as file:
+with open('out/output' + T + '.csv', 'w') as file:
     movies = [''] + H.movieIDs
     movieStr = ','.join(movies)
     file.write(movieStr + '\n')
@@ -134,5 +131,6 @@ with open('output.csv', 'w') as file:
         ratingStr = ','.join(ratings)
         file.write(ratingStr + '\n')
 
+# 计时
 endtime = datetime.datetime.now()
 print((endtime - starttime).seconds)
