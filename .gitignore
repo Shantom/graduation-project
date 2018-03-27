@@ -2,3 +2,10 @@
 .DS_Store
 
 .idea/
+in/
+out/
+debug/
+release/
+Makefile*
+*qmake*
+*.user

@@ -1,6 +1,6 @@
 import numpy as np
 
-test = False
+test = True
 T = ''
 if test:
     T = 'T'
@@ -65,13 +65,16 @@ class HeraRec:
         result = []
         for index in indexs:
             if simils[index] != 0:
-                result.append([self.movieTitle[self.movieIDs[index]]
+                result.append([self.movieIDs[index], self.movieTitle[self.movieIDs[index]]
                                   , self.movieGenre[self.movieIDs[index]]])
         print(result)
+
+        with open('out/recResults'+T+'.csv','w') as file:
+            for item in result:
+                file.write(item[0]+','+item[1]+',')
+                file.write('|'.join(item[2])+'\n')
 
 
 H = HeraRec()
 
 H.start('2')
-
-
