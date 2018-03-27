@@ -1,12 +1,13 @@
+import sys
 import numpy as np
 import datetime
 
-starttime = datetime.datetime.now()
-
-test = False
 T = ''
-if test:
-    T = 'T'
+if len(sys.argv) >= 2:
+    if sys.argv[-1] == '-d':  # 调试模式
+        T = 'T'
+
+starttime = datetime.datetime.now()
 
 
 class HeraSim:
@@ -90,7 +91,6 @@ class HeraSim:
         self.genreCount = len(self.genreIDs)
         self.userCount = len(self.userIDs)
 
-
     def start(self, path='UMGM'):
         self.preProcess()
         BRMs = [np.mat(np.eye(self.movieCount))]
@@ -133,4 +133,4 @@ with open('out/output' + T + '.csv', 'w') as file:
 
 # 计时
 endtime = datetime.datetime.now()
-print((endtime - starttime).seconds)
+print('用时(s)：', (endtime - starttime).seconds)

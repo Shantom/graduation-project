@@ -1,9 +1,10 @@
+import sys
 import numpy as np
 
-test = True
 T = ''
-if test:
-    T = 'T'
+if len(sys.argv) >= 2:
+    if sys.argv[-1] == '-d':  # 调试模式
+        T = 'T'
 
 
 class HeraRec:
@@ -69,10 +70,10 @@ class HeraRec:
                                   , self.movieGenre[self.movieIDs[index]]])
         print(result)
 
-        with open('out/recResults'+T+'.csv','w') as file:
+        with open('out/recResults' + T + '.csv', 'w') as file:
             for item in result:
-                file.write(item[0]+','+item[1]+',')
-                file.write('|'.join(item[2])+'\n')
+                file.write(item[0] + ',' + item[1] + ',')
+                file.write('|'.join(item[2]) + '\n')
 
 
 H = HeraRec()
