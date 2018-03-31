@@ -86,14 +86,21 @@
       <attribute name="title">
        <string>最终版</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QTableWidget" name="tableWidget_2">
-         <column>
+        <widget class="QLabel" name="label_Ult">
+         <property name="text">
+          <string>最终版：将所有元路径计算出的相似度加权平均。</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableWidget_Ult">
+         <row>
           <property name="text">
-           <string>推荐名次</string>
+           <string>新建行</string>
           </property>
-         </column>
+         </row>
          <column>
           <property name="text">
            <string>电影序号</string>
@@ -119,14 +126,30 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="label_UMGM">
          <property name="text">
           <string>元路径&quot;UMGM&quot;：推荐给你看过的相同类型的电影</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="tableWidget"/>
+        <widget class="QTableWidget" name="tableWidget_UMGM">
+         <column>
+          <property name="text">
+           <string>电影序号</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>电影名</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>类别</string>
+          </property>
+         </column>
+        </widget>
        </item>
       </layout>
      </widget>

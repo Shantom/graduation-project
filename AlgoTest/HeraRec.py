@@ -3,7 +3,7 @@ import numpy as np
 
 T = ''
 if len(sys.argv) >= 2:
-    if sys.argv[-1] == '-d':  # 调试模式
+    if sys.argv[1] == '-d':  # 调试模式
         T = 'T'
 
 
@@ -17,7 +17,7 @@ class HeraRec:
         self.userRatings = {}
 
     def loadMovies(self):
-        with open('in/movies' + T + '.csv') as movies:
+        with open('../AlgoTest/in/movies' + T + '.csv') as movies:
             movies.readline()
             for line in movies:
                 movieID = line.split(',')[0]
@@ -29,7 +29,7 @@ class HeraRec:
                 self.movieGenre[movieID] = genres
 
     def loadUsers(self):
-        with open('in/ratings' + T + '.csv') as users:
+        with open('../AlgoTest/in/ratings' + T + '.csv') as users:
             users.readline()
             for line in users:
                 userID = line.split(',')[0]
@@ -45,12 +45,13 @@ class HeraRec:
         self.loadUsers()
         if user not in self.userIDs:
             print('user ' + user + ' does not exist!')
+            file = open('../AlgoTest/out/recResultsUlt' + T + '.csv', 'w')
             return
 
         userIndex = self.userIDs.index(user)
 
         simils = []
-        with open('out/output' + T + '.csv') as file:
+        with open('../AlgoTest/out/output' + T + '.csv') as file:
             file.readline()
             for i in range(userIndex):
                 file.readline()
@@ -70,7 +71,7 @@ class HeraRec:
                                   , self.movieGenre[self.movieIDs[index]]])
         print(result)
 
-        with open('out/recResults' + T + '.csv', 'w') as file:
+        with open('../AlgoTest/out/recResultsUlt' + T + '.csv', 'w') as file:
             for item in result:
                 file.write(item[0] + ',' + item[1] + ',')
                 file.write('|'.join(item[2]) + '\n')
@@ -78,4 +79,5 @@ class HeraRec:
 
 H = HeraRec()
 
-H.start('2')
+user = sys.argv[-1]
+H.start(user)

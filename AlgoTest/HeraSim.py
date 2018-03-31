@@ -30,7 +30,7 @@ class HeraSim:
     def leadInMovies(self):
         genreSet = set()
         movieType = []
-        with open('in/movies' + T + '.csv') as movies:
+        with open('../AlgoTest/in/movies' + T + '.csv') as movies:
             movies.readline()
             for line in movies:
                 movieID = line.split(',')[0]
@@ -54,7 +54,7 @@ class HeraSim:
 
     def leadInRatings(self):
         userRatings = []
-        with open('in/ratings' + T + '.csv') as ratings:
+        with open('../AlgoTest/in/ratings' + T + '.csv') as ratings:
             ratings.readline()
             for line in ratings:
                 userID = line.split(',')[0]
@@ -121,7 +121,7 @@ class HeraSim:
 
 H = HeraSim()
 S = H.start()
-with open('out/output' + T + '.csv', 'w') as file:
+with open('../AlgoTest/out/output' + T + '.csv', 'w') as file:
     movies = [''] + H.movieIDs
     movieStr = ','.join(movies)
     file.write(movieStr + '\n')
