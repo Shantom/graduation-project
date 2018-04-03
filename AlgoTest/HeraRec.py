@@ -45,7 +45,7 @@ class HeraRec:
         self.loadUsers()
         if user not in self.userIDs:
             print('user ' + user + ' does not exist!')
-            file = open('../AlgoTest/out/recResultsUlt' + T + '.csv', 'w')
+            open('../AlgoTest/out/recResultsUlt' + T + '.csv', 'w')
             return
 
         userIndex = self.userIDs.index(user)

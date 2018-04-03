@@ -15,6 +15,7 @@ class HeraSim:
         self.movieIDs = []  # 存放movieID
         self.genreIDs = []  # 存放genreID
         self.userIDs = []  # 存放userID
+        self.metapaths = ['UMGM', 'UMUM', 'UMGMUM', 'UMUMGM']
 
     @staticmethod
     def normalize(matrix):
@@ -91,14 +92,22 @@ class HeraSim:
         self.genreCount = len(self.genreIDs)
         self.userCount = len(self.userIDs)
 
-    def start(self, path='UMGM'):
-        self.preProcess()
+    def process(self, path='UMGM'):
         BRMs = [np.mat(np.eye(self.movieCount))]
         FRMs = [np.mat(np.eye(self.userCount))]
         Bs, Fs = [], []
         if path == 'UMGM':
             Bs = [self.U_MG, self.U_GM, self.U_MU]
             Fs = [self.U_UM, self.U_MG, self.U_GM]
+        elif path == 'UMUM':
+            Bs = [self.U_MU, self.U_UM, self.U_MU]
+            Fs = [self.U_UM, self.U_MU, self.U_UM]
+        elif path == 'UMGMUM':
+            Bs = [self.U_MU, self.U_UM, self.U_MG, self.U_GM, self.U_MU]
+            Fs = [self.U_UM, self.U_MG, self.U_GM, self.U_MU, self.U_UM]
+        elif path == 'UMUMGM':
+            Bs = [self.U_MG, self.U_GM, self.U_MU, self.U_UM, self.U_MU]
+            Fs = [self.U_UM, self.U_MU, self.U_UM, self.U_MG, self.U_GM]
 
         for i in range(1, len(path)):
             BRMs.append(BRMs[i - 1] * Bs[i - 1])
@@ -113,23 +122,34 @@ class HeraSim:
                     denominator = np.linalg.norm(FRMs[k][i]) * np.linalg.norm(BRMs[len(path) - k - 1][j])
                     if denominator != 0:
                         S[i, j] += numerator[i, j] / denominator
-                    else:
-                        print('zero division!')
         S /= len(path)
         return S
 
+    def output(self, S, path):
+        with open('../AlgoTest/out/output' + path + T + '.csv', 'w') as file:
+            movies = [''] + H.movieIDs
+            movieStr = ','.join(movies)
+            file.write(movieStr + '\n')
+            for i in range(len(H.userIDs)):
+                ratings = [H.userIDs[i]] + S[i].tolist()[0]
+                ratings = list(map(str, ratings))
+                ratingStr = ','.join(ratings)
+                file.write(ratingStr + '\n')
+
+    def start(self):
+        self.preProcess()
+
+        S = []
+        for path in self.metapaths:
+            S.append(self.process(path))
+            self.output(S[-1], path)
+        Sult = sum(S) / len(S)  # 这里暂时先将所有元路径权值视为相等
+        self.output(Sult, 'Ult')
+
 
 H = HeraSim()
-S = H.start()
-with open('../AlgoTest/out/output' + T + '.csv', 'w') as file:
-    movies = [''] + H.movieIDs
-    movieStr = ','.join(movies)
-    file.write(movieStr + '\n')
-    for i in range(len(H.userIDs)):
-        ratings = [H.userIDs[i]] + S[i].tolist()[0]
-        ratings = list(map(str, ratings))
-        ratingStr = ','.join(ratings)
-        file.write(ratingStr + '\n')
+
+H.start()
 
 # 计时
 endtime = datetime.datetime.now()

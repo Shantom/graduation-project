@@ -12,6 +12,9 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
+    //QProcess::execute("python --version");
+
     ui->checkBox_test->setChecked(true);
     ui->tableWidget_Ult->setSortingEnabled(false);
 
