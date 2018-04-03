@@ -80,7 +80,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -96,11 +96,6 @@
        </item>
        <item>
         <widget class="QTableWidget" name="tableWidget_Ult">
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
          <column>
           <property name="text">
            <string>电影序号</string>
@@ -134,6 +129,105 @@
        </item>
        <item>
         <widget class="QTableWidget" name="tableWidget_UMGM">
+         <column>
+          <property name="text">
+           <string>电影序号</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>电影名</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>类别</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>UMUM</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QLabel" name="label_UMUM">
+         <property name="text">
+          <string>元路径&quot;UMUM&quot;：推荐给你和你评分相近的用户也看过的电影</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableWidget_UMUM">
+         <column>
+          <property name="text">
+           <string>电影序号</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>电影名</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>类别</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>UMGMUM</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_11">
+       <item>
+        <widget class="QLabel" name="label_UMGMUM">
+         <property name="text">
+          <string>元路径&quot;UMGMUM&quot;：推荐给你和你看过同样类型电影的用户也看过的电影</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableWidget_UMGMUM">
+         <column>
+          <property name="text">
+           <string>电影序号</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>电影名</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>类别</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>UMUMGM</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_12">
+       <item>
+        <widget class="QLabel" name="label_UMUMGM">
+         <property name="text">
+          <string>元路径&quot;UMUMGM&quot;：推荐给你和你评分相近的用户看过的类型相同的电影</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableWidget_UMUMGM">
          <column>
           <property name="text">
            <string>电影序号</string>

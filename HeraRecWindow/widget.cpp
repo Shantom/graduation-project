@@ -13,8 +13,6 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //QProcess::execute("python --version");
-
     ui->checkBox_test->setChecked(true);
     ui->tableWidget_Ult->setSortingEnabled(false);
 
@@ -22,8 +20,14 @@ Widget::Widget(QWidget *parent) :
 
     resultFiles.append("../AlgoTest/out/recResultsUlt.csv");
     resultFiles.append("../AlgoTest/out/recResultsUMGM.csv");
+    resultFiles.append("../AlgoTest/out/recResultsUMUM.csv");
+    resultFiles.append("../AlgoTest/out/recResultsUMGMUM.csv");
+    resultFiles.append("../AlgoTest/out/recResultsUMUMGM.csv");
     resultFilesT.append("../AlgoTest/out/recResultsUltT.csv");
     resultFilesT.append("../AlgoTest/out/recResultsUMGMT.csv");
+    resultFilesT.append("../AlgoTest/out/recResultsUMUMT.csv");
+    resultFilesT.append("../AlgoTest/out/recResultsUMGMUMT.csv");
+    resultFilesT.append("../AlgoTest/out/recResultsUMUMGMT.csv");
 
     initTables();
 }
@@ -70,7 +74,7 @@ void Widget::on_pushButton_rec_clicked()
     for(int i=0;i<results.size();i++)
     {
         if(!results[i]->open(QIODevice::ReadOnly | QIODevice::Text))
-            qDebug()<<"file "<<i<<" open failed.";
+            qDebug()<<"file "<<i<<" open failed."<<results[i]->errorString();
         std::vector<Movie> movies;
         if(results[0]->atEnd() && i==0)
         {
@@ -98,7 +102,6 @@ void Widget::on_pushButton_rec_clicked()
     {
         results[i]->close();
         delete results[i];
-        qDebug()<<"deleted results_"<<i ;
     }
     writeTable();
 }
@@ -107,6 +110,9 @@ void Widget::initTables()
 {
     tables.push_back(ui->tableWidget_Ult);
     tables.push_back(ui->tableWidget_UMGM);
+    tables.push_back(ui->tableWidget_UMUM);
+    tables.push_back(ui->tableWidget_UMGMUM);
+    tables.push_back(ui->tableWidget_UMUMGM);
 
     for(auto table:tables)
     {
@@ -126,7 +132,6 @@ void Widget::writeTable()
         int rowCount=tables[i]->rowCount();
         for(int j=0;j<rowCount;j++)
         {
-            qDebug()<<"here";
             tables[i]->removeRow(0);
         }
         int nOldRowCount = 0;

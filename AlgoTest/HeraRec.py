@@ -15,6 +15,7 @@ class HeraRec:
         self.movieTitle = {}
         self.movieGenre = {}
         self.userRatings = {}
+        self.metapaths = ['UMGM', 'UMUM', 'UMGMUM', 'UMUMGM']
 
     def loadMovies(self):
         with open('../AlgoTest/in/movies' + T + '.csv') as movies:
@@ -40,9 +41,7 @@ class HeraRec:
                     self.userRatings[userID] = {}
                 self.userRatings[userID][movieID] = rating
 
-    def start(self, user):
-        self.loadMovies()
-        self.loadUsers()
+    def process(self, user, path):
         if user not in self.userIDs:
             print('user ' + user + ' does not exist!')
             open('../AlgoTest/out/recResultsUlt' + T + '.csv', 'w')
@@ -51,7 +50,7 @@ class HeraRec:
         userIndex = self.userIDs.index(user)
 
         simils = []
-        with open('../AlgoTest/out/output' + T + '.csv') as file:
+        with open('../AlgoTest/out/output' + path + T + '.csv') as file:
             file.readline()
             for i in range(userIndex):
                 file.readline()
@@ -71,10 +70,16 @@ class HeraRec:
                                   , self.movieGenre[self.movieIDs[index]]])
         print(result)
 
-        with open('../AlgoTest/out/recResultsUlt' + T + '.csv', 'w') as file:
+        with open('../AlgoTest/out/recResults' + path + T + '.csv', 'w') as file:
             for item in result:
                 file.write(item[0] + ',' + item[1] + ',')
                 file.write('|'.join(item[2]) + '\n')
+
+    def start(self, user):
+        self.loadMovies()
+        self.loadUsers()
+        for path in self.metapaths:
+            self.process(user, path)
 
 
 H = HeraRec()
