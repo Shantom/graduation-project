@@ -12,6 +12,7 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    this->setWindowTitle("电影个性化推荐系统");
 
     ui->checkBox_test->setChecked(true);
     ui->tableWidget_Ult->setSortingEnabled(false);
@@ -74,7 +75,11 @@ void Widget::on_pushButton_rec_clicked()
     for(int i=0;i<results.size();i++)
     {
         if(!results[i]->open(QIODevice::ReadOnly | QIODevice::Text))
+        {
             qDebug()<<"file "<<i<<" open failed."<<results[i]->errorString();
+            QMessageBox::information(this,"信息","请先分析相似度");
+            return;
+        }
         std::vector<Movie> movies;
         if(results[0]->atEnd() && i==0)
         {

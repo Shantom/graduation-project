@@ -15,7 +15,7 @@ class HeraRec:
         self.movieTitle = {}
         self.movieGenre = {}
         self.userRatings = {}
-        self.metapaths = ['UMGM', 'UMUM', 'UMGMUM', 'UMUMGM']
+        self.metapaths = ['UMGM', 'UMUM', 'UMGMUM', 'UMUMGM', 'Ult']
 
     def loadMovies(self):
         with open('../AlgoTest/in/movies' + T + '.csv') as movies:

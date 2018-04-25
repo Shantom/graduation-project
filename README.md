@@ -1,2 +1,20 @@
-# graduation-project
-There are some documents related to my graduation project of bachelor.
+# 电影个性化推荐系统
+
+该系统代码分为两部分**HeraRecWindow**和**AlgoTest**
+
+## HeraRecWindow
+
+该部分是可供用户使用的客户端GUI，其中(下文中*表示后缀名，包括但不限于cpp, h, ui, pro)：
+
+* widget.* 系列：窗口设计模块，包含窗口中各个部件的功能实现，例如按钮，文本输入，表格输出等。
+* movie.* 系列：Movie类模块，包含推荐系统的对象主体（电影）信息，对于该对象的操作全在此模块上。
+* main.cpp：主函数，负责启动程序和结束程序。
+* HeraRecWindow.pro：Qt的项目文件。
+
+## AlgoTest
+
+该部分是可供客户端调用的Python脚本程序，分为两个文件和两个文件夹，其中：
+
+* HeraSim.py：导入数据集文件，并进行相似度计算，输出相似度矩阵。
+* HeraRec.py：导入相似度矩阵，并根据用户输入的ID参数，输出推荐的电影列表。
+* in/out目录：存放着脚本程序输入输出的数据，包括MovieLens数据集，相似度矩阵，以及推荐的电影列表。
