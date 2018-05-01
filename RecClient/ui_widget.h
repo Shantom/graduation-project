@@ -32,6 +32,7 @@ class Ui_Widget
 public:
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_2;
+    QPushButton *pushButton_conn;
     QPushButton *pushButton_sim;
     QCheckBox *checkBox_test;
     QLabel *label_sim;
@@ -75,6 +76,11 @@ public:
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        pushButton_conn = new QPushButton(Widget);
+        pushButton_conn->setObjectName(QStringLiteral("pushButton_conn"));
+
+        horizontalLayout_2->addWidget(pushButton_conn);
+
         pushButton_sim = new QPushButton(Widget);
         pushButton_sim->setObjectName(QStringLiteral("pushButton_sim"));
 
@@ -266,6 +272,7 @@ public:
     void retranslateUi(QWidget *Widget)
     {
         Widget->setWindowTitle(QApplication::translate("Widget", "Widget", nullptr));
+        pushButton_conn->setText(QApplication::translate("Widget", "\350\277\236\346\216\245\346\234\215\345\212\241\345\231\250", nullptr));
         pushButton_sim->setText(QApplication::translate("Widget", "\347\233\270\344\274\274\345\272\246\345\210\206\346\236\220", nullptr));
         checkBox_test->setText(QApplication::translate("Widget", "Debug", nullptr));
         label_sim->setText(QString());

@@ -14,10 +14,17 @@ Widget::Widget(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("电影个性化推荐系统");
 
+    socket=new QTcpSocket();
+
     ui->checkBox_test->setChecked(true);
     ui->tableWidget_Ult->setSortingEnabled(false);
 
     ui->lineEdit_userID->setText("1");
+    ui->lineEdit_userID->setEnabled(false);
+    ui->checkBox_test->setEnabled(false);
+    ui->pushButton_rec->setEnabled(false);
+    ui->pushButton_sim->setEnabled(false);
+    ui->tabWidget->setEnabled(false);
 
     resultFiles.append("../AlgoTest/out/recResultsUlt.csv");
     resultFiles.append("../AlgoTest/out/recResultsUMGM.csv");
@@ -158,3 +165,28 @@ void Widget::addItemToRow(int row, int col, QString item, QTableWidget *table)
     itemWidget->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
 }
 
+
+void Widget::on_pushButton_conn_clicked()
+{
+    socket->connectToHost("127.0.0.1",40100,QTcpSocket::ReadWrite);
+    connect(socket,SIGNAL(connected()),this,SLOT(connected()));
+
+    if(socket->waitForConnected(1000))
+    {
+        QMessageBox::information(this,"成功","连接成功\n");
+    }
+    else
+    {
+        QMessageBox::warning(this,"超时","连接超时\n");
+    }
+}
+void Widget::connected()
+{
+    connect(socket,SIGNAL(readyRead()),this,SLOT(readyread()));
+    ui->pushButton_conn->setEnabled(false);
+    ui->lineEdit_userID->setEnabled(true);
+    ui->checkBox_test->setEnabled(true);
+    ui->pushButton_rec->setEnabled(true);
+    ui->pushButton_sim->setEnabled(true);
+    ui->tabWidget->setEnabled(true);
+}

@@ -5,6 +5,7 @@
 #include "movie.h"
 #include <vector>
 #include <QTableWidget>
+#include <QTcpSocket>
 
 namespace Ui {
 class Widget;
@@ -23,8 +24,15 @@ private slots:
 
     void on_pushButton_rec_clicked();
 
+    void on_pushButton_conn_clicked();
+
+    void connected();
 private:
     Ui::Widget *ui;
+
+    QTcpSocket * socket;
+
+
     std::vector<std::vector<Movie>> moviesRes;
     QStringList resultFiles;
     QStringList resultFilesT;
