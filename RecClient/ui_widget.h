@@ -33,14 +33,13 @@ public:
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *pushButton_conn;
-    QPushButton *pushButton_sim;
-    QCheckBox *checkBox_test;
     QLabel *label_sim;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QLineEdit *lineEdit_userID;
     QHBoxLayout *horizontalLayout_4;
     QSpacerItem *horizontalSpacer;
+    QCheckBox *checkBox_test;
     QPushButton *pushButton_rec;
     QTabWidget *tabWidget;
     QWidget *tab;
@@ -81,16 +80,6 @@ public:
 
         horizontalLayout_2->addWidget(pushButton_conn);
 
-        pushButton_sim = new QPushButton(Widget);
-        pushButton_sim->setObjectName(QStringLiteral("pushButton_sim"));
-
-        horizontalLayout_2->addWidget(pushButton_sim);
-
-        checkBox_test = new QCheckBox(Widget);
-        checkBox_test->setObjectName(QStringLiteral("checkBox_test"));
-
-        horizontalLayout_2->addWidget(checkBox_test);
-
         label_sim = new QLabel(Widget);
         label_sim->setObjectName(QStringLiteral("label_sim"));
 
@@ -121,6 +110,11 @@ public:
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_4->addItem(horizontalSpacer);
+
+        checkBox_test = new QCheckBox(Widget);
+        checkBox_test->setObjectName(QStringLiteral("checkBox_test"));
+
+        horizontalLayout_4->addWidget(checkBox_test);
 
         pushButton_rec = new QPushButton(Widget);
         pushButton_rec->setObjectName(QStringLiteral("pushButton_rec"));
@@ -273,10 +267,9 @@ public:
     {
         Widget->setWindowTitle(QApplication::translate("Widget", "Widget", nullptr));
         pushButton_conn->setText(QApplication::translate("Widget", "\350\277\236\346\216\245\346\234\215\345\212\241\345\231\250", nullptr));
-        pushButton_sim->setText(QApplication::translate("Widget", "\347\233\270\344\274\274\345\272\246\345\210\206\346\236\220", nullptr));
-        checkBox_test->setText(QApplication::translate("Widget", "Debug", nullptr));
         label_sim->setText(QString());
         label->setText(QApplication::translate("Widget", "UserID:", nullptr));
+        checkBox_test->setText(QApplication::translate("Widget", "Debug", nullptr));
         pushButton_rec->setText(QApplication::translate("Widget", "\345\274\200\345\247\213\346\216\250\350\215\220", nullptr));
         label_Ult->setText(QApplication::translate("Widget", "\346\234\200\347\273\210\347\211\210\357\274\232\345\260\206\346\211\200\346\234\211\345\205\203\350\267\257\345\276\204\350\256\241\347\256\227\345\207\272\347\232\204\347\233\270\344\274\274\345\272\246\345\212\240\346\235\203\345\271\263\345\235\207\343\200\202", nullptr));
         QTableWidgetItem *___qtablewidgetitem = tableWidget_Ult->horizontalHeaderItem(0);

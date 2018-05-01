@@ -24,20 +24,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_sim">
-       <property name="text">
-        <string>相似度分析</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBox_test">
-       <property name="text">
-        <string>Debug</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QLabel" name="label_sim">
        <property name="text">
         <string/>
@@ -74,6 +60,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBox_test">
+       <property name="text">
+        <string>Debug</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_rec">

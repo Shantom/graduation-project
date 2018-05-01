@@ -14,7 +14,7 @@ public:
     explicit Communication(QObject *parent = nullptr);
     Widget * widget;
 signals:
-    void message(QString msg);
+    void message(QByteArray msg);
 public slots:
     void startServer();
     void newConnection();

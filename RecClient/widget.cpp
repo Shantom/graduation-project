@@ -23,7 +23,6 @@ Widget::Widget(QWidget *parent) :
     ui->lineEdit_userID->setEnabled(false);
     ui->checkBox_test->setEnabled(false);
     ui->pushButton_rec->setEnabled(false);
-    ui->pushButton_sim->setEnabled(false);
     ui->tabWidget->setEnabled(false);
 
     resultFiles.append("../AlgoTest/out/recResultsUlt.csv");
@@ -45,77 +44,16 @@ Widget::~Widget()
     delete ui;
 }
 
-void Widget::on_pushButton_sim_clicked()
-{
-    if(ui->checkBox_test->isChecked())
-        QProcess::execute("python ../AlgoTest/HeraSim.py -d");
-    else
-        QProcess::execute("python ../AlgoTest/HeraSim.py");
-
-    QMessageBox::information(this,"信息","相似度分析完成。");
-}
 
 void Widget::on_pushButton_rec_clicked()
 {
-    moviesRes.clear();
     QString user=ui->lineEdit_userID->text();
-    std::vector<QFile*> results;
-    if(ui->checkBox_test->isChecked())
-    {
-        QProcess::execute(QString("python ../AlgoTest/HeraRec.py -d ")+user);
-        for(auto file:resultFilesT)
-        {
-            QFile* result=new QFile(file);
-            results.push_back(result);
-        }
-    }
-    else
-    {
-        QProcess::execute(QString("python ../AlgoTest/HeraRec.py ")+user);
-        for(auto file:resultFiles)
-        {
-            QFile* result=new QFile(file);
-            results.push_back(result);
-        }
-    }
-
-    for(int i=0;i<results.size();i++)
-    {
-        if(!results[i]->open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            qDebug()<<"file "<<i<<" open failed."<<results[i]->errorString();
-            QMessageBox::information(this,"信息","请先分析相似度");
-            return;
-        }
-        std::vector<Movie> movies;
-        if(results[0]->atEnd() && i==0)
-        {
-            QMessageBox::information(this,"错误","查无此用户");
-            return;
-        }
-        while(!results[i]->atEnd())
-        {
-            QString movie=results[i]->readLine();
-            if(movie.isEmpty())
-                break;
-            QStringList infos=movie.split(",");
-            std::string id=infos.at(0).toStdString();
-            std::string title=infos.at(1).toStdString();
-            QString genresStr=infos.at(2);
-            QStringList genreStrList=genresStr.split("|");
-            std::vector<std::string> genres;
-            for(QString genre:genreStrList)
-                genres.push_back(genre.toStdString());
-            movies.push_back(Movie(id,title,genres));
-        }
-        moviesRes.push_back(movies);
-    }
-    for(int i=0;i<results.size();i++)
-    {
-        results[i]->close();
-        delete results[i];
-    }
-    writeTable();
+    bool isDebug=ui->checkBox_test->isChecked();
+    QByteArray datagram;//datagram to send
+    QDataStream outStream(&datagram,QIODevice::ReadWrite);
+    outStream<<user<<isDebug;
+    socket->write(datagram);
+//    writeTable();
 }
 
 void Widget::initTables()
@@ -165,7 +103,6 @@ void Widget::addItemToRow(int row, int col, QString item, QTableWidget *table)
     itemWidget->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
 }
 
-
 void Widget::on_pushButton_conn_clicked()
 {
     socket->connectToHost("127.0.0.1",40100,QTcpSocket::ReadWrite);
@@ -180,13 +117,18 @@ void Widget::on_pushButton_conn_clicked()
         QMessageBox::warning(this,"超时","连接超时\n");
     }
 }
+
 void Widget::connected()
 {
-    connect(socket,SIGNAL(readyRead()),this,SLOT(readyread()));
+    connect(socket,&QIODevice::readyRead,this,&Widget::receiveData);
     ui->pushButton_conn->setEnabled(false);
     ui->lineEdit_userID->setEnabled(true);
     ui->checkBox_test->setEnabled(true);
     ui->pushButton_rec->setEnabled(true);
-    ui->pushButton_sim->setEnabled(true);
     ui->tabWidget->setEnabled(true);
+}
+
+void Widget::receiveData()
+{
+
 }

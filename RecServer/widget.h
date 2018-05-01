@@ -24,11 +24,13 @@ public:
     ~Widget();
 
 public slots:
-    void readyMsg(QString msg);
+    void readyMsg(QByteArray msg);
 
 private slots:
     void on_pushButton_start_clicked();
 
+
+    void on_pushButton_sim_clicked();
 
 private:
     Ui::Widget *ui;
@@ -40,7 +42,7 @@ private:
     QStringList resultFilesT;
 
     void similarityCalculation(bool isDebug);
-    void recOnUser(bool isDebug, QString user);
+    bool recOnUser(bool isDebug, QString user);
 
 };
 

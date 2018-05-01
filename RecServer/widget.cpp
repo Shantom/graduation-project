@@ -8,6 +8,8 @@ Widget::Widget(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("推荐系统服务器端");
     handler.widget=this;
+    ui->checkBox_debug->setChecked(true);
+    connect(&handler,&Communication::message,this,&Widget::readyMsg);
     resultFiles.append("../AlgoTest/out/recResultsUlt.csv");
     resultFiles.append("../AlgoTest/out/recResultsUMGM.csv");
     resultFiles.append("../AlgoTest/out/recResultsUMUM.csv");
@@ -25,9 +27,20 @@ Widget::~Widget()
     delete ui;
 }
 
-void Widget::readyMsg(QString msg)
+void Widget::readyMsg(QByteArray msg)
 {
-    ui->textBrowser->append(msg);
+    if(msg=="new")
+        ui->textBrowser->append("新用户接入");
+    else
+    {
+        qDebug()<<msg;
+        QDataStream inStream(msg);
+        QString user;
+        bool isDebug;
+        inStream>>user>>isDebug;
+        qDebug()<<"user:"<<user;
+        recOnUser(isDebug,user);
+    }
 }
 
 void Widget::on_pushButton_start_clicked()
@@ -48,7 +61,7 @@ void Widget::similarityCalculation(bool isDebug)
     QMessageBox::information(this,"信息","相似度分析完成。");
 }
 
-void Widget::recOnUser(bool isDebug, QString user)
+bool Widget::recOnUser(bool isDebug, QString user)
 {
     moviesRes.clear();
     QList<QFile*> results;
@@ -77,13 +90,13 @@ void Widget::recOnUser(bool isDebug, QString user)
         {
             qDebug()<<"file "<<i<<" open failed."<<results[i]->errorString();
             qDebug()<<"暂未分析相似度";
-            return;
+            return false;
         }
         QList<Movie> movies;
         if(results[0]->atEnd() && i==0)
         {
             qDebug()<<"查无此用户";
-            return;
+            return false;
         }
         while(!results[i]->atEnd())
         {
@@ -107,5 +120,10 @@ void Widget::recOnUser(bool isDebug, QString user)
         results[i]->close();
         delete results[i];
     }
-    //send infos back to clients
+    return true;
+}
+
+void Widget::on_pushButton_sim_clicked()
+{
+    similarityCalculation(ui->checkBox_debug->isChecked());
 }

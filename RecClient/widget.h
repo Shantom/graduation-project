@@ -20,13 +20,14 @@ public:
     ~Widget();
 
 private slots:
-    void on_pushButton_sim_clicked();
 
     void on_pushButton_rec_clicked();
 
     void on_pushButton_conn_clicked();
 
     void connected();
+
+    void receiveData();
 private:
     Ui::Widget *ui;
 

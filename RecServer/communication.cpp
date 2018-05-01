@@ -18,11 +18,11 @@ void Communication::newConnection()
     QTcpSocket * socket=server->nextPendingConnection();
     QString addr=socket->peerAddress().toString();
     QString port=QString::number(socket->peerPort());
-    connect(this,&Communication::message,widget,&Widget::readyMsg);
+
     connect(socket, &QIODevice::readyRead,this,&Communication::ReceiveData);
 
     if(socket)
-        emit message("123");
+        emit message(QString("new").toUtf8());
     sockets.append(socket);
 }
 
@@ -32,7 +32,8 @@ void Communication::ReceiveData()
     QByteArray arr=socket->readAll();
     QString addr=socket->peerAddress().toString();
     QString port=QString::number(socket->peerPort());
-    emit message(addr+":"+port+":\n\t"+QString(arr));
+    QString msg=addr+":"+port+":\n"+QString(arr);
+    emit message(arr);
 }
 
 
