@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include "movie.h"
 
 
 class Widget;
@@ -13,8 +14,9 @@ class Communication : public QObject
 public:
     explicit Communication(QObject *parent = nullptr);
     Widget * widget;
+    void sendMovies(QTcpSocket * socket,int error, QList<QList<Movie>> movieRes);
 signals:
-    void message(QByteArray msg);
+    void message(QTcpSocket * socket, QByteArray msg);
 public slots:
     void startServer();
     void newConnection();
@@ -25,5 +27,8 @@ private:
     QList<QTcpSocket *> sockets;
 
 };
+
+QDataStream &operator<<(QDataStream &out, Movie *mv);
+QDataStream &operator>>(QDataStream &in, Movie *mv);
 
 #endif // COMMUNICATION_H

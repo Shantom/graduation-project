@@ -9,11 +9,11 @@ public:
     Movie(std::string id,std::string title, std::vector<std::string> genres)
         :id(id),title(title),genres(genres){}
     void setID(std::string id);
-    std::string ID();
+    std::string ID() const;
     void setTitle(std::string title);
-    std::string Title();
+    std::string Title() const;
     void setGenres(std::vector<std::string> genres);
-    std::vector<std::string> Genres();
+    std::vector<std::string> Genres() const;
     std::string GenreStr();
 private:
     std::string id;

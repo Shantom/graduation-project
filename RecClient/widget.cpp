@@ -25,17 +25,6 @@ Widget::Widget(QWidget *parent) :
     ui->pushButton_rec->setEnabled(false);
     ui->tabWidget->setEnabled(false);
 
-    resultFiles.append("../AlgoTest/out/recResultsUlt.csv");
-    resultFiles.append("../AlgoTest/out/recResultsUMGM.csv");
-    resultFiles.append("../AlgoTest/out/recResultsUMUM.csv");
-    resultFiles.append("../AlgoTest/out/recResultsUMGMUM.csv");
-    resultFiles.append("../AlgoTest/out/recResultsUMUMGM.csv");
-    resultFilesT.append("../AlgoTest/out/recResultsUltT.csv");
-    resultFilesT.append("../AlgoTest/out/recResultsUMGMT.csv");
-    resultFilesT.append("../AlgoTest/out/recResultsUMUMT.csv");
-    resultFilesT.append("../AlgoTest/out/recResultsUMGMUMT.csv");
-    resultFilesT.append("../AlgoTest/out/recResultsUMUMGMT.csv");
-
     initTables();
 }
 
@@ -48,6 +37,8 @@ Widget::~Widget()
 void Widget::on_pushButton_rec_clicked()
 {
     QString user=ui->lineEdit_userID->text();
+    if(user.isEmpty())//输入为空则不操作
+        return;
     bool isDebug=ui->checkBox_test->isChecked();
     QByteArray datagram;//datagram to send
     QDataStream outStream(&datagram,QIODevice::ReadWrite);
@@ -130,5 +121,66 @@ void Widget::connected()
 
 void Widget::receiveData()
 {
+    moviesRes.clear();
+    QByteArray msg=socket->readAll();
+    qDebug()<<"got:"<<msg;
+    QDataStream inStream(msg);
 
+    int error;
+    inStream>>error;
+    if(error==1)
+    {
+        QMessageBox::critical(this,"警告","暂未分析相似度");
+        return;
+    }
+    else if(error==2)
+    {
+        QMessageBox::critical(this,"警告","查无此用户");
+        return;
+    }
+
+    for(int i=0;i<5;i++)
+    {
+        QList<Movie> path;
+        unsigned size;
+        inStream>>size;
+        for(int j=0;j<size;j++)
+        {
+            Movie mv;
+            inStream>>(&mv);
+            path.append(mv);
+        }
+        moviesRes.append(path);
+    }
+    writeTable();
+}
+
+QDataStream &operator<<(QDataStream &out, Movie *&mv)
+{
+    out<<QString(mv->ID().c_str())<<QString(mv->Title().c_str());
+    out<<mv->Genres().size();
+    for(std::string genre:mv->Genres())
+    {
+        out<<QString(genre.c_str());
+    }
+    return out;
+}
+
+QDataStream &operator>>(QDataStream &in, Movie *mv)
+{
+    QString id;
+    QString title;
+    unsigned size;
+    QString genre;
+    std::vector<std::string> genres;
+    in>>id>>title>>size;
+    mv->setID(id.toStdString());
+    mv->setTitle(title.toStdString());
+    for(int i=0;i<size;i++)
+    {
+        in>>genre;
+        genres.push_back(genre.toStdString());
+    }
+    mv->setGenres(genres);
+    return in;
 }

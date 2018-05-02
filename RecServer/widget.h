@@ -24,11 +24,10 @@ public:
     ~Widget();
 
 public slots:
-    void readyMsg(QByteArray msg);
+    void readyMsg(QTcpSocket *socket, QByteArray msg);
 
 private slots:
     void on_pushButton_start_clicked();
-
 
     void on_pushButton_sim_clicked();
 
@@ -38,6 +37,8 @@ private:
     Communication handler;
 
     QList<QList<Movie>> moviesRes;
+    QString errorStr;
+    int errorType;
     QStringList resultFiles;
     QStringList resultFilesT;
 

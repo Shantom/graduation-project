@@ -34,7 +34,7 @@ private:
     QTcpSocket * socket;
 
 
-    std::vector<std::vector<Movie>> moviesRes;
+    QList<QList<Movie>> moviesRes;
     QStringList resultFiles;
     QStringList resultFilesT;
 
@@ -44,4 +44,6 @@ private:
     std::vector<QTableWidget *> tables;
 };
 
+QDataStream &operator<<(QDataStream &out, Movie *&mv);
+QDataStream &operator>>(QDataStream &in, Movie *mv);
 #endif // WIDGET_H
