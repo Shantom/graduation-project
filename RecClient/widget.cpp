@@ -44,7 +44,6 @@ void Widget::on_pushButton_rec_clicked()
     QDataStream outStream(&datagram,QIODevice::ReadWrite);
     outStream<<user<<isDebug;
     socket->write(datagram);
-//    writeTable();
 }
 
 void Widget::initTables()
@@ -123,7 +122,6 @@ void Widget::receiveData()
 {
     moviesRes.clear();
     QByteArray msg=socket->readAll();
-    qDebug()<<"got:"<<msg;
     QDataStream inStream(msg);
 
     int error;

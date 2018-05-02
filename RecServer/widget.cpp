@@ -20,7 +20,7 @@ Widget::Widget(QWidget *parent) :
     resultFilesT.append("../AlgoTest/out/recResultsUMUMT.csv");
     resultFilesT.append("../AlgoTest/out/recResultsUMGMUMT.csv");
     resultFilesT.append("../AlgoTest/out/recResultsUMUMGMT.csv");
-    emit ui->pushButton_start->clicked();
+//    emit ui->pushButton_start->clicked();
 }
 
 Widget::~Widget()
@@ -47,12 +47,13 @@ void Widget::readyMsg(QTcpSocket * socket,QByteArray msg)
         info+=QString(" 请求推荐\n\t用户ID：");
         info+=user;
         if(isDebug)
-            info+=QString("\n\t(测试用集)\n");
-        else
-            info+=QString("\n");
-        ui->textBrowser->append(info);
-        recOnUser(isDebug,user);
+            info+=QString("\n\t(测试用集)");
+         recOnUser(isDebug,user);
         handler.sendMovies(socket,errorType,moviesRes);
+        info+=QString("\n\t错误信息：");
+        info+=errorStr;
+        info+=QString("\n");
+        ui->textBrowser->append(info);
     }
 }
 

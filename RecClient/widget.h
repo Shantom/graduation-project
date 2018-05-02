@@ -33,10 +33,7 @@ private:
 
     QTcpSocket * socket;
 
-
     QList<QList<Movie>> moviesRes;
-    QStringList resultFiles;
-    QStringList resultFilesT;
 
     void initTables();
     void writeTable();
