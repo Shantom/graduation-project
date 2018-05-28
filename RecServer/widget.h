@@ -28,23 +28,18 @@ public slots:
 
 private slots:
     void on_pushButton_start_clicked();
-
     void on_pushButton_sim_clicked();
 
 private:
     Ui::Widget *ui;
-
     Communication handler;
-
     QList<QList<Movie>> moviesRes;
     QString errorStr;
     int errorType;
     QStringList resultFiles;
     QStringList resultFilesT;
-
     void similarityCalculation(bool isDebug);
     bool recOnUser(bool isDebug, QString user);
-
 };
 
 #endif // WIDGET_H

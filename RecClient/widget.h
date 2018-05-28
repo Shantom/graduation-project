@@ -20,25 +20,20 @@ public:
     ~Widget();
 
 private slots:
-
     void on_pushButton_rec_clicked();
-
     void on_pushButton_conn_clicked();
-
     void connected();
-
     void receiveData();
+
 private:
     Ui::Widget *ui;
-
     QTcpSocket * socket;
-
     QList<QList<Movie>> moviesRes;
-
     void initTables();
     void writeTable();
     void addItemToRow(int row, int col, QString item, QTableWidget * table);
     std::vector<QTableWidget *> tables;
+
 };
 
 QDataStream &operator<<(QDataStream &out, Movie *&mv);

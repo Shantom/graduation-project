@@ -15,8 +15,10 @@ public:
     explicit Communication(QObject *parent = nullptr);
     Widget * widget;
     void sendMovies(QTcpSocket * socket,int error, QList<QList<Movie>> movieRes);
+
 signals:
     void message(QTcpSocket * socket, QByteArray msg);
+
 public slots:
     void startServer();
     void newConnection();
@@ -25,7 +27,6 @@ public slots:
 private:
     QTcpServer * server;
     QList<QTcpSocket *> sockets;
-
 };
 
 QDataStream &operator<<(QDataStream &out, Movie *mv);

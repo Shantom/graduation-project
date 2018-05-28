@@ -1,15 +1,25 @@
 # 电影个性化推荐系统
 
-该系统代码分为两部分**HeraRecWindow**和**AlgoTest**
+该系统代码分为三部分**RecClient**, **RecServer**和**AlgoTest**
 
-## HeraRecWindow
+## RecClient
 
 该部分是可供用户使用的客户端GUI，其中(下文中*表示后缀名，包括但不限于cpp, h, ui, pro)：
 
-* widget.* 系列：窗口设计模块，包含窗口中各个部件的功能实现，例如按钮，文本输入，表格输出等。
+* widget.* 系列：窗口设计模块，包含窗口中各个部件的功能实现以及与服务器连接的功能，例如按钮，文本输入，表格输出等。
 * movie.* 系列：Movie类模块，包含推荐系统的对象主体（电影）信息，对于该对象的操作全在此模块上。
 * main.cpp：主函数，负责启动程序和结束程序。
-* HeraRecWindow.pro：Qt的项目文件。
+* RecClient.pro：Qt的项目文件。
+
+## **RecServer**
+
+该部分是供管理员启动服务查看日志以及为客户端服务的服务器，其中(下文中*表示后缀名，包括但不限于cpp, h, ui, pro)：
+
+* widget.* 系列：窗口设计模块，包含按钮启动服务和相似度计算，以及一个日志显示文本框
+* communication.* 系列：通讯模块，负责帮助窗口与客户端进行数据交流。
+* main.cpp：主函数，负责启动和结束程序。
+* movie.* 系列：Movie类模块，包含推荐系统的对象主体（电影）信息，对于该对象的操作全在此模块上。
+* RecServer.pro：Qt的项目文件。
 
 ## AlgoTest
 
