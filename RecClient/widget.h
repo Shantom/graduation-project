@@ -25,6 +25,8 @@ private slots:
     void connected();
     void receiveData();
 
+    void on_pushButton_login_clicked();
+
 private:
     Ui::Widget *ui;
     QTcpSocket * socket;

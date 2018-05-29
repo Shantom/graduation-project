@@ -1,5 +1,6 @@
 #include "widget.h"
 #include "ui_widget.h"
+#include <QFile>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -8,6 +9,8 @@ Widget::Widget(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("推荐系统服务器端");
     handler.widget=this;
+    database=new Database();
+
     ui->checkBox_debug->setChecked(true);
     connect(&handler,&Communication::message,this,&Widget::readyMsg);
     resultFiles.append("../AlgoTest/out/recResultsUlt.csv");
@@ -41,19 +44,43 @@ void Widget::readyMsg(QTcpSocket * socket,QByteArray msg)
     else
     {
         QDataStream inStream(msg);
-        QString user;
-        bool isDebug;
-        inStream>>user>>isDebug;
-        info+=QString(" 请求推荐\n\t用户ID：");
-        info+=user;
-        if(isDebug)
-            info+=QString("\n\t(测试用集)");
-         recOnUser(isDebug,user);
-        handler.sendMovies(socket,errorType,moviesRes);
-        info+=QString("\n\t错误信息：");
-        info+=errorStr;
-        info+=QString("\n");
-        ui->textBrowser->append(info);
+        QString type;
+        inStream>>type;
+        if(type=="query"){
+            QString user;
+            bool isDebug;
+            inStream>>user>>isDebug;
+            info+=QString(" 请求推荐\n\t用户ID：");
+            info+=user;
+            if(isDebug)
+                info+=QString("\n\t(测试用集)");
+             recOnUser(isDebug,user);
+            handler.sendMovies(socket,errorType,moviesRes);
+            info+=QString("\n\t错误信息：");
+            info+=errorStr;
+            info+=QString("\n");
+            ui->textBrowser->append(info);
+        }
+        else if(type=="login"){
+            QString name,pwd;
+            inStream>>name>>pwd;
+            bool ok=database->login(name,pwd);
+            if(ok){
+                handler.response(socket,3);
+            }else{
+                handler.response(socket,4);
+            }
+        }
+        else if(type=="signup"){
+            QString name,pwd;
+            inStream>>name>>pwd;
+            bool ok=database->signup(name,pwd);
+            if(ok){
+                handler.response(socket,5);
+            }else{
+                handler.response(socket,6);
+            }
+        }
     }
 }
 
@@ -67,9 +94,9 @@ void Widget::on_pushButton_start_clicked()
 void Widget::similarityCalculation(bool isDebug)
 {
     if(isDebug)
-        QProcess::execute("python ../AlgoTest/HeraSim.py -d");
+        QProcess::execute("python3 ../AlgoTest/HeraSim.py -d");
     else
-        QProcess::execute("python ../AlgoTest/HeraSim.py");
+        QProcess::execute("python3 ../AlgoTest/HeraSim.py");
 
     QMessageBox::information(this,"信息","相似度分析完成。");
 }
@@ -80,7 +107,7 @@ bool Widget::recOnUser(bool isDebug, QString user)
     QList<QFile*> results;//存放推荐列表文件的指针表
     if(isDebug)
     {
-        QProcess::execute(QString("python ../AlgoTest/HeraRec.py -d ")+user);
+        QProcess::execute(QString("python3 ../AlgoTest/HeraRec.py -d ")+user);
         for(auto file:resultFilesT)
         {
             QFile* result=new QFile(file);
@@ -89,7 +116,7 @@ bool Widget::recOnUser(bool isDebug, QString user)
     }
     else
     {
-        QProcess::execute(QString("python ../AlgoTest/HeraRec.py ")+user);
+        QProcess::execute(QString("python3 ../AlgoTest/HeraRec.py ")+user);
         for(auto file:resultFiles)
         {
             QFile* result=new QFile(file);

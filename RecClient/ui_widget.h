@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'widget.ui'
 **
-** Created by: Qt User Interface Compiler version 5.10.1
+** Created by: Qt User Interface Compiler version 5.9.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -30,10 +30,26 @@ QT_BEGIN_NAMESPACE
 class Ui_Widget
 {
 public:
-    QVBoxLayout *verticalLayout_2;
+    QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *pushButton_conn;
     QLabel *label_sim;
+    QPushButton *pushButton_extra;
+    QWidget *widget;
+    QHBoxLayout *horizontalLayout_LS;
+    QVBoxLayout *verticalLayout_2;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_2;
+    QLineEdit *lineEdit_name;
+    QHBoxLayout *horizontalLayout_5;
+    QLabel *label_3;
+    QLineEdit *lineEdit_pwd;
+    QVBoxLayout *verticalLayout_5;
+    QPushButton *pushButton_login;
+    QPushButton *pushButton_signup;
+    QWidget *widget1;
+    QVBoxLayout *verticalLayout_6;
+    QHBoxLayout *horizontalLayout_6;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QLineEdit *lineEdit_userID;
@@ -67,42 +83,116 @@ public:
     {
         if (Widget->objectName().isEmpty())
             Widget->setObjectName(QStringLiteral("Widget"));
-        Widget->resize(682, 402);
-        verticalLayout_2 = new QVBoxLayout(Widget);
-        verticalLayout_2->setSpacing(6);
-        verticalLayout_2->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        horizontalLayout_2 = new QHBoxLayout();
+        Widget->resize(682, 640);
+        layoutWidget = new QWidget(Widget);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(9, 9, 106, 33));
+        horizontalLayout_2 = new QHBoxLayout(layoutWidget);
         horizontalLayout_2->setSpacing(6);
+        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        pushButton_conn = new QPushButton(Widget);
+        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
+        pushButton_conn = new QPushButton(layoutWidget);
         pushButton_conn->setObjectName(QStringLiteral("pushButton_conn"));
 
         horizontalLayout_2->addWidget(pushButton_conn);
 
-        label_sim = new QLabel(Widget);
+        label_sim = new QLabel(layoutWidget);
         label_sim->setObjectName(QStringLiteral("label_sim"));
 
         horizontalLayout_2->addWidget(label_sim);
 
+        pushButton_extra = new QPushButton(Widget);
+        pushButton_extra->setObjectName(QStringLiteral("pushButton_extra"));
+        pushButton_extra->setGeometry(QRect(300, 140, 101, 31));
+        widget = new QWidget(Widget);
+        widget->setObjectName(QStringLiteral("widget"));
+        widget->setGeometry(QRect(121, 9, 271, 76));
+        horizontalLayout_LS = new QHBoxLayout(widget);
+        horizontalLayout_LS->setSpacing(6);
+        horizontalLayout_LS->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_LS->setObjectName(QStringLiteral("horizontalLayout_LS"));
+        horizontalLayout_LS->setContentsMargins(0, 0, 0, 0);
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setSpacing(6);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        label_2 = new QLabel(widget);
+        label_2->setObjectName(QStringLiteral("label_2"));
 
-        verticalLayout_2->addLayout(horizontalLayout_2);
+        horizontalLayout_3->addWidget(label_2);
 
+        lineEdit_name = new QLineEdit(widget);
+        lineEdit_name->setObjectName(QStringLiteral("lineEdit_name"));
+
+        horizontalLayout_3->addWidget(lineEdit_name);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_3);
+
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
+        label_3 = new QLabel(widget);
+        label_3->setObjectName(QStringLiteral("label_3"));
+
+        horizontalLayout_5->addWidget(label_3);
+
+        lineEdit_pwd = new QLineEdit(widget);
+        lineEdit_pwd->setObjectName(QStringLiteral("lineEdit_pwd"));
+
+        horizontalLayout_5->addWidget(lineEdit_pwd);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_5);
+
+
+        horizontalLayout_LS->addLayout(verticalLayout_2);
+
+        verticalLayout_5 = new QVBoxLayout();
+        verticalLayout_5->setSpacing(6);
+        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
+        pushButton_login = new QPushButton(widget);
+        pushButton_login->setObjectName(QStringLiteral("pushButton_login"));
+
+        verticalLayout_5->addWidget(pushButton_login);
+
+        pushButton_signup = new QPushButton(widget);
+        pushButton_signup->setObjectName(QStringLiteral("pushButton_signup"));
+
+        verticalLayout_5->addWidget(pushButton_signup);
+
+
+        horizontalLayout_LS->addLayout(verticalLayout_5);
+
+        widget1 = new QWidget(Widget);
+        widget1->setObjectName(QStringLiteral("widget1"));
+        widget1->setGeometry(QRect(9, 220, 512, 321));
+        verticalLayout_6 = new QVBoxLayout(widget1);
+        verticalLayout_6->setSpacing(6);
+        verticalLayout_6->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
+        verticalLayout_6->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setSpacing(6);
+        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        label = new QLabel(Widget);
+        label = new QLabel(widget1);
         label->setObjectName(QStringLiteral("label"));
 
         horizontalLayout->addWidget(label);
 
-        lineEdit_userID = new QLineEdit(Widget);
+        lineEdit_userID = new QLineEdit(widget1);
         lineEdit_userID->setObjectName(QStringLiteral("lineEdit_userID"));
 
         horizontalLayout->addWidget(lineEdit_userID);
 
 
-        verticalLayout_2->addLayout(horizontalLayout);
+        horizontalLayout_6->addLayout(horizontalLayout);
 
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setSpacing(6);
@@ -111,20 +201,23 @@ public:
 
         horizontalLayout_4->addItem(horizontalSpacer);
 
-        checkBox_test = new QCheckBox(Widget);
+        checkBox_test = new QCheckBox(widget1);
         checkBox_test->setObjectName(QStringLiteral("checkBox_test"));
 
         horizontalLayout_4->addWidget(checkBox_test);
 
-        pushButton_rec = new QPushButton(Widget);
+        pushButton_rec = new QPushButton(widget1);
         pushButton_rec->setObjectName(QStringLiteral("pushButton_rec"));
 
         horizontalLayout_4->addWidget(pushButton_rec);
 
 
-        verticalLayout_2->addLayout(horizontalLayout_4);
+        horizontalLayout_6->addLayout(horizontalLayout_4);
 
-        tabWidget = new QTabWidget(Widget);
+
+        verticalLayout_6->addLayout(horizontalLayout_6);
+
+        tabWidget = new QTabWidget(widget1);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         tab = new QWidget();
         tab->setObjectName(QStringLiteral("tab"));
@@ -252,7 +345,7 @@ public:
 
         tabWidget->addTab(tab_5, QString());
 
-        verticalLayout_2->addWidget(tabWidget);
+        verticalLayout_6->addWidget(tabWidget);
 
 
         retranslateUi(Widget);
@@ -265,52 +358,57 @@ public:
 
     void retranslateUi(QWidget *Widget)
     {
-        Widget->setWindowTitle(QApplication::translate("Widget", "Widget", nullptr));
-        pushButton_conn->setText(QApplication::translate("Widget", "\350\277\236\346\216\245\346\234\215\345\212\241\345\231\250", nullptr));
+        Widget->setWindowTitle(QApplication::translate("Widget", "Widget", Q_NULLPTR));
+        pushButton_conn->setText(QApplication::translate("Widget", "\350\277\236\346\216\245\346\234\215\345\212\241\345\231\250", Q_NULLPTR));
         label_sim->setText(QString());
-        label->setText(QApplication::translate("Widget", "UserID:", nullptr));
-        checkBox_test->setText(QApplication::translate("Widget", "Debug", nullptr));
-        pushButton_rec->setText(QApplication::translate("Widget", "\345\274\200\345\247\213\346\216\250\350\215\220", nullptr));
-        label_Ult->setText(QApplication::translate("Widget", "\346\234\200\347\273\210\347\211\210\357\274\232\345\260\206\346\211\200\346\234\211\345\205\203\350\267\257\345\276\204\350\256\241\347\256\227\345\207\272\347\232\204\347\233\270\344\274\274\345\272\246\345\212\240\346\235\203\345\271\263\345\235\207\343\200\202", nullptr));
+        pushButton_extra->setText(QApplication::translate("Widget", "\345\261\225\345\274\200\345\205\250\351\203\250\346\237\245\350\257\242", Q_NULLPTR));
+        label_2->setText(QApplication::translate("Widget", "Name:", Q_NULLPTR));
+        label_3->setText(QApplication::translate("Widget", "pwd:", Q_NULLPTR));
+        pushButton_login->setText(QApplication::translate("Widget", "Login", Q_NULLPTR));
+        pushButton_signup->setText(QApplication::translate("Widget", "Signup", Q_NULLPTR));
+        label->setText(QApplication::translate("Widget", "UserID:", Q_NULLPTR));
+        checkBox_test->setText(QApplication::translate("Widget", "Debug", Q_NULLPTR));
+        pushButton_rec->setText(QApplication::translate("Widget", "Search", Q_NULLPTR));
+        label_Ult->setText(QApplication::translate("Widget", "\346\234\200\347\273\210\347\211\210\357\274\232\345\260\206\346\211\200\346\234\211\345\205\203\350\267\257\345\276\204\350\256\241\347\256\227\345\207\272\347\232\204\347\233\270\344\274\274\345\272\246\345\212\240\346\235\203\345\271\263\345\235\207\343\200\202", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem = tableWidget_Ult->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\272\217\345\217\267", nullptr));
+        ___qtablewidgetitem->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\272\217\345\217\267", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem1 = tableWidget_Ult->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\220\215", nullptr));
+        ___qtablewidgetitem1->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\220\215", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem2 = tableWidget_Ult->horizontalHeaderItem(2);
-        ___qtablewidgetitem2->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("Widget", "\346\234\200\347\273\210\347\211\210", nullptr));
-        label_UMGM->setText(QApplication::translate("Widget", "\345\205\203\350\267\257\345\276\204\"UMGM\"\357\274\232\346\216\250\350\215\220\347\273\231\344\275\240\347\234\213\350\277\207\347\232\204\347\233\270\345\220\214\347\261\273\345\236\213\347\232\204\347\224\265\345\275\261", nullptr));
+        ___qtablewidgetitem2->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("Widget", "\346\234\200\347\273\210\347\211\210", Q_NULLPTR));
+        label_UMGM->setText(QApplication::translate("Widget", "\345\205\203\350\267\257\345\276\204\"UMGM\"\357\274\232\346\216\250\350\215\220\347\273\231\344\275\240\347\234\213\350\277\207\347\232\204\347\233\270\345\220\214\347\261\273\345\236\213\347\232\204\347\224\265\345\275\261", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem3 = tableWidget_UMGM->horizontalHeaderItem(0);
-        ___qtablewidgetitem3->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\272\217\345\217\267", nullptr));
+        ___qtablewidgetitem3->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\272\217\345\217\267", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem4 = tableWidget_UMGM->horizontalHeaderItem(1);
-        ___qtablewidgetitem4->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\220\215", nullptr));
+        ___qtablewidgetitem4->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\220\215", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem5 = tableWidget_UMGM->horizontalHeaderItem(2);
-        ___qtablewidgetitem5->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("Widget", "UMGM", nullptr));
-        label_UMUM->setText(QApplication::translate("Widget", "\345\205\203\350\267\257\345\276\204\"UMUM\"\357\274\232\346\216\250\350\215\220\347\273\231\344\275\240\345\222\214\344\275\240\350\257\204\345\210\206\347\233\270\350\277\221\347\232\204\347\224\250\346\210\267\344\271\237\347\234\213\350\277\207\347\232\204\347\224\265\345\275\261", nullptr));
+        ___qtablewidgetitem5->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("Widget", "UMGM", Q_NULLPTR));
+        label_UMUM->setText(QApplication::translate("Widget", "\345\205\203\350\267\257\345\276\204\"UMUM\"\357\274\232\346\216\250\350\215\220\347\273\231\344\275\240\345\222\214\344\275\240\350\257\204\345\210\206\347\233\270\350\277\221\347\232\204\347\224\250\346\210\267\344\271\237\347\234\213\350\277\207\347\232\204\347\224\265\345\275\261", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem6 = tableWidget_UMUM->horizontalHeaderItem(0);
-        ___qtablewidgetitem6->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\272\217\345\217\267", nullptr));
+        ___qtablewidgetitem6->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\272\217\345\217\267", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem7 = tableWidget_UMUM->horizontalHeaderItem(1);
-        ___qtablewidgetitem7->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\220\215", nullptr));
+        ___qtablewidgetitem7->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\220\215", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem8 = tableWidget_UMUM->horizontalHeaderItem(2);
-        ___qtablewidgetitem8->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("Widget", "UMUM", nullptr));
-        label_UMGMUM->setText(QApplication::translate("Widget", "\345\205\203\350\267\257\345\276\204\"UMGMUM\"\357\274\232\346\216\250\350\215\220\347\273\231\344\275\240\345\222\214\344\275\240\347\234\213\350\277\207\345\220\214\346\240\267\347\261\273\345\236\213\347\224\265\345\275\261\347\232\204\347\224\250\346\210\267\344\271\237\347\234\213\350\277\207\347\232\204\347\224\265\345\275\261", nullptr));
+        ___qtablewidgetitem8->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("Widget", "UMUM", Q_NULLPTR));
+        label_UMGMUM->setText(QApplication::translate("Widget", "\345\205\203\350\267\257\345\276\204\"UMGMUM\"\357\274\232\346\216\250\350\215\220\347\273\231\344\275\240\345\222\214\344\275\240\347\234\213\350\277\207\345\220\214\346\240\267\347\261\273\345\236\213\347\224\265\345\275\261\347\232\204\347\224\250\346\210\267\344\271\237\347\234\213\350\277\207\347\232\204\347\224\265\345\275\261", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem9 = tableWidget_UMGMUM->horizontalHeaderItem(0);
-        ___qtablewidgetitem9->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\272\217\345\217\267", nullptr));
+        ___qtablewidgetitem9->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\272\217\345\217\267", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem10 = tableWidget_UMGMUM->horizontalHeaderItem(1);
-        ___qtablewidgetitem10->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\220\215", nullptr));
+        ___qtablewidgetitem10->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\220\215", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem11 = tableWidget_UMGMUM->horizontalHeaderItem(2);
-        ___qtablewidgetitem11->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_4), QApplication::translate("Widget", "UMGMUM", nullptr));
-        label_UMUMGM->setText(QApplication::translate("Widget", "\345\205\203\350\267\257\345\276\204\"UMUMGM\"\357\274\232\346\216\250\350\215\220\347\273\231\344\275\240\345\222\214\344\275\240\350\257\204\345\210\206\347\233\270\350\277\221\347\232\204\347\224\250\346\210\267\347\234\213\350\277\207\347\232\204\347\261\273\345\236\213\347\233\270\345\220\214\347\232\204\347\224\265\345\275\261", nullptr));
+        ___qtablewidgetitem11->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab_4), QApplication::translate("Widget", "UMGMUM", Q_NULLPTR));
+        label_UMUMGM->setText(QApplication::translate("Widget", "\345\205\203\350\267\257\345\276\204\"UMUMGM\"\357\274\232\346\216\250\350\215\220\347\273\231\344\275\240\345\222\214\344\275\240\350\257\204\345\210\206\347\233\270\350\277\221\347\232\204\347\224\250\346\210\267\347\234\213\350\277\207\347\232\204\347\261\273\345\236\213\347\233\270\345\220\214\347\232\204\347\224\265\345\275\261", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem12 = tableWidget_UMUMGM->horizontalHeaderItem(0);
-        ___qtablewidgetitem12->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\272\217\345\217\267", nullptr));
+        ___qtablewidgetitem12->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\272\217\345\217\267", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem13 = tableWidget_UMUMGM->horizontalHeaderItem(1);
-        ___qtablewidgetitem13->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\220\215", nullptr));
+        ___qtablewidgetitem13->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\220\215", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem14 = tableWidget_UMUMGM->horizontalHeaderItem(2);
-        ___qtablewidgetitem14->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_5), QApplication::translate("Widget", "UMUMGM", nullptr));
+        ___qtablewidgetitem14->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab_5), QApplication::translate("Widget", "UMUMGM", Q_NULLPTR));
     } // retranslateUi
 
 };

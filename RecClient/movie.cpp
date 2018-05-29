@@ -34,7 +34,7 @@ std::vector<std::string> Movie::Genres() const
 std::string Movie::GenreStr()
 {
     std::string genreStr;
-    for(int i=0;i<genres.size();i++)
+    for(unsigned i=0;i<genres.size();i++)
     {
         if(i!=0)
             genreStr.append(",");

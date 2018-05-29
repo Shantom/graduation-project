@@ -6,6 +6,7 @@
 #include <QFile>
 #include <vector>
 #include <QDebug>
+#include <QCryptographicHash>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -24,6 +25,7 @@ Widget::Widget(QWidget *parent) :
     ui->checkBox_test->setEnabled(false);
     ui->pushButton_rec->setEnabled(false);
     ui->tabWidget->setEnabled(false);
+    ui->lineEdit_pwd->setEchoMode(QLineEdit::Password);
 
     initTables();
 }
@@ -42,7 +44,7 @@ void Widget::on_pushButton_rec_clicked()
     bool isDebug=ui->checkBox_test->isChecked();
     QByteArray datagram;//datagram to send
     QDataStream outStream(&datagram,QIODevice::ReadWrite);
-    outStream<<user<<isDebug;
+    outStream<<QString("query")<<user<<isDebug;
     socket->write(datagram);
 }
 
@@ -124,16 +126,26 @@ void Widget::receiveData()
     QByteArray msg=socket->readAll();
     QDataStream inStream(msg);
 
-    int error;
-    inStream>>error;
-    if(error==1)
+    int info;
+    inStream>>info;
+    if(info==1)
     {
         QMessageBox::critical(this,"警告","暂未分析相似度");
         return;
     }
-    else if(error==2)
+    else if(info==2)
     {
         QMessageBox::critical(this,"警告","查无此用户");
+        return;
+    }
+    else if(info==3)
+    {
+        QMessageBox::information(this,"成功","登录成功");
+        return;
+    }
+    else if(info==4)
+    {
+        QMessageBox::critical(this,"失败","用户名不存在或密码错误");
         return;
     }
 
@@ -142,7 +154,7 @@ void Widget::receiveData()
         QList<Movie> path;
         unsigned size;
         inStream>>size;
-        for(int j=0;j<size;j++)
+        for(unsigned j=0;j<size;j++)
         {
             Movie mv;
             inStream>>(&mv);
@@ -156,7 +168,7 @@ void Widget::receiveData()
 QDataStream &operator<<(QDataStream &out, Movie *&mv)
 {
     out<<QString(mv->ID().c_str())<<QString(mv->Title().c_str());
-    out<<mv->Genres().size();
+    out<<(unsigned)mv->Genres().size();
     for(std::string genre:mv->Genres())
     {
         out<<QString(genre.c_str());
@@ -174,11 +186,23 @@ QDataStream &operator>>(QDataStream &in, Movie *mv)
     in>>id>>title>>size;
     mv->setID(id.toStdString());
     mv->setTitle(title.toStdString());
-    for(int i=0;i<size;i++)
+    for(unsigned i=0;i<size;i++)
     {
         in>>genre;
         genres.push_back(genre.toStdString());
     }
     mv->setGenres(genres);
     return in;
+}
+
+void Widget::on_pushButton_login_clicked()
+{
+    QByteArray datagram;//datagram to send
+    QDataStream outStream(&datagram,QIODevice::ReadWrite);
+    QString name=ui->lineEdit_name->text().trimmed();
+    QString password=ui->lineEdit_pwd->text().trimmed();
+    password = (QString)QCryptographicHash::hash(password.toLatin1(),
+                                                 QCryptographicHash::Md5).toHex().toUpper();
+    outStream<<QString("login")<<name<<password;
+    socket->write(datagram);
 }

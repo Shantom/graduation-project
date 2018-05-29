@@ -9,6 +9,7 @@
 #include <QList>
 #include "movie.h"
 #include "communication.h"
+#include "database.h"
 
 namespace Ui {
 class Widget;
@@ -33,6 +34,7 @@ private slots:
 private:
     Ui::Widget *ui;
     Communication handler;
+    Database * database;
     QList<QList<Movie>> moviesRes;
     QString errorStr;
     int errorType;

@@ -23,6 +23,15 @@ void Communication::sendMovies(QTcpSocket *socket, int error, QList<QList<Movie>
     socket->write(datagram);
 }
 
+void Communication::response(QTcpSocket *socket, int info)
+{
+    QByteArray datagram;//datagram to send
+    QDataStream outStream(&datagram,QIODevice::ReadWrite);
+
+    outStream<<info;//类型
+    socket->write(datagram);
+}
+
 void Communication::startServer()
 {
     server=new QTcpServer(this);
@@ -53,7 +62,7 @@ void Communication::ReceiveData()
 QDataStream &operator<<(QDataStream &out, Movie *mv)
 {
     out<<QString(mv->ID().c_str())<<QString(mv->Title().c_str());
-    out<<mv->Genres().size();
+    out<<(unsigned)mv->Genres().size();
     for(std::string genre:mv->Genres())
     {
         out<<QString(genre.c_str());
