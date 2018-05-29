@@ -148,6 +148,16 @@ void Widget::receiveData()
         QMessageBox::critical(this,"失败","用户名不存在或密码错误");
         return;
     }
+    else if(info==5)
+    {
+        QMessageBox::information(this,"成功","注册成功");
+        return;
+    }
+    else if(info==6)
+    {
+        QMessageBox::critical(this,"失败","用户名已存在");
+        return;
+    }
 
     for(int i=0;i<5;i++)
     {
@@ -204,5 +214,17 @@ void Widget::on_pushButton_login_clicked()
     password = (QString)QCryptographicHash::hash(password.toLatin1(),
                                                  QCryptographicHash::Md5).toHex().toUpper();
     outStream<<QString("login")<<name<<password;
+    socket->write(datagram);
+}
+
+void Widget::on_pushButton_signup_clicked()
+{
+    QByteArray datagram;//datagram to send
+    QDataStream outStream(&datagram,QIODevice::ReadWrite);
+    QString name=ui->lineEdit_name->text().trimmed();
+    QString password=ui->lineEdit_pwd->text().trimmed();
+    password = (QString)QCryptographicHash::hash(password.toLatin1(),
+                                                 QCryptographicHash::Md5).toHex().toUpper();
+    outStream<<QString("signup")<<name<<password;
     socket->write(datagram);
 }
