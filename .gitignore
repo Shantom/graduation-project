@@ -1,6 +1,9 @@
 *.docx
 .DS_Store
-
+*.o
+moc*
+RecClient/RecClient
+RecServer/RecServer
 .idea/
 in/
 out/
