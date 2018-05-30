@@ -21,10 +21,20 @@ Widget::Widget(QWidget *parent) :
     ui->tableWidget_Ult->setSortingEnabled(false);
 
     ui->lineEdit_userID->setText("1");
-    ui->lineEdit_userID->setEnabled(false);
-    ui->checkBox_test->setEnabled(false);
-    ui->pushButton_rec->setEnabled(false);
-    ui->tabWidget->setEnabled(false);
+
+    ui->lineEdit_name->setEnabled(false);
+    ui->lineEdit_pwd->setEnabled(false);
+    ui->pushButton_login->setEnabled(false);
+    ui->pushButton_signup->setEnabled(false);
+
+    ui->lineEdit_userID->hide();
+    ui->checkBox_test->hide();
+    ui->pushButton_rec->hide();
+    ui->tabWidget->hide();
+    ui->label_userid->hide();
+    ui->doubleSpinBox_rating->hide();
+    ui->pushButton_rate->hide();
+
     ui->lineEdit_pwd->setEchoMode(QLineEdit::Password);
 
     initTables();
@@ -114,10 +124,11 @@ void Widget::connected()
 {
     connect(socket,&QIODevice::readyRead,this,&Widget::receiveData);
     ui->pushButton_conn->setEnabled(false);
-    ui->lineEdit_userID->setEnabled(true);
-    ui->checkBox_test->setEnabled(true);
-    ui->pushButton_rec->setEnabled(true);
-    ui->tabWidget->setEnabled(true);
+
+    ui->lineEdit_name->setEnabled(true);
+    ui->lineEdit_pwd->setEnabled(true);
+    ui->pushButton_login->setEnabled(true);
+    ui->pushButton_signup->setEnabled(true);
 }
 
 void Widget::receiveData()
@@ -128,7 +139,7 @@ void Widget::receiveData()
 
     int info;
     inStream>>info;
-    if(info==1)
+    if(info==1)//can be shortened!!!
     {
         QMessageBox::critical(this,"警告","暂未分析相似度");
         return;
@@ -141,6 +152,22 @@ void Widget::receiveData()
     else if(info==3)
     {
         QMessageBox::information(this,"成功","登录成功");
+        ui->lineEdit_userID->show();
+        ui->checkBox_test->show();
+        ui->pushButton_rec->show();
+        ui->tabWidget->show();
+        ui->label_userid->show();
+        ui->doubleSpinBox_rating->show();
+        ui->pushButton_rate->show();
+        ui->pushButton_conn->hide();
+        ui->lineEdit_name->hide();
+        ui->lineEdit_pwd->hide();
+        ui->pushButton_login->hide();
+        ui->pushButton_signup->hide();
+        ui->label_name->hide();
+        ui->label_pwd->hide();
+        ui->lineEdit_userID->setText(ui->lineEdit_name->text());
+        ui->lineEdit_userID->setEnabled(false);
         return;
     }
     else if(info==4)

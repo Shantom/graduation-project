@@ -14,6 +14,8 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QCheckBox>
+#include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -30,31 +32,27 @@ QT_BEGIN_NAMESPACE
 class Ui_Widget
 {
 public:
-    QWidget *layoutWidget;
+    QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *pushButton_conn;
-    QLabel *label_sim;
-    QPushButton *pushButton_extra;
-    QWidget *widget;
     QHBoxLayout *horizontalLayout_LS;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_3;
-    QLabel *label_2;
+    QLabel *label_name;
     QLineEdit *lineEdit_name;
     QHBoxLayout *horizontalLayout_5;
-    QLabel *label_3;
+    QLabel *label_pwd;
     QLineEdit *lineEdit_pwd;
     QVBoxLayout *verticalLayout_5;
     QPushButton *pushButton_login;
     QPushButton *pushButton_signup;
-    QWidget *widget1;
     QVBoxLayout *verticalLayout_6;
     QHBoxLayout *horizontalLayout_6;
     QHBoxLayout *horizontalLayout;
-    QLabel *label;
+    QLabel *label_userid;
     QLineEdit *lineEdit_userID;
     QHBoxLayout *horizontalLayout_4;
-    QSpacerItem *horizontalSpacer;
+    QSpacerItem *horizontalSpacer_search;
     QCheckBox *checkBox_test;
     QPushButton *pushButton_rec;
     QTabWidget *tabWidget;
@@ -78,53 +76,46 @@ public:
     QVBoxLayout *verticalLayout_12;
     QLabel *label_UMUMGM;
     QTableWidget *tableWidget_UMUMGM;
+    QHBoxLayout *horizontalLayout_7;
+    QSpacerItem *horizontalSpacer_rate;
+    QDoubleSpinBox *doubleSpinBox_rating;
+    QPushButton *pushButton_rate;
 
     void setupUi(QWidget *Widget)
     {
         if (Widget->objectName().isEmpty())
             Widget->setObjectName(QStringLiteral("Widget"));
-        Widget->resize(682, 640);
-        layoutWidget = new QWidget(Widget);
-        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(9, 9, 106, 33));
-        horizontalLayout_2 = new QHBoxLayout(layoutWidget);
+        Widget->resize(682, 339);
+        gridLayout = new QGridLayout(Widget);
+        gridLayout->setSpacing(6);
+        gridLayout->setContentsMargins(11, 11, 11, 11);
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
-        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
-        pushButton_conn = new QPushButton(layoutWidget);
+        pushButton_conn = new QPushButton(Widget);
         pushButton_conn->setObjectName(QStringLiteral("pushButton_conn"));
 
         horizontalLayout_2->addWidget(pushButton_conn);
 
-        label_sim = new QLabel(layoutWidget);
-        label_sim->setObjectName(QStringLiteral("label_sim"));
 
-        horizontalLayout_2->addWidget(label_sim);
+        gridLayout->addLayout(horizontalLayout_2, 0, 0, 1, 1);
 
-        pushButton_extra = new QPushButton(Widget);
-        pushButton_extra->setObjectName(QStringLiteral("pushButton_extra"));
-        pushButton_extra->setGeometry(QRect(300, 140, 101, 31));
-        widget = new QWidget(Widget);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(121, 9, 271, 76));
-        horizontalLayout_LS = new QHBoxLayout(widget);
+        horizontalLayout_LS = new QHBoxLayout();
         horizontalLayout_LS->setSpacing(6);
-        horizontalLayout_LS->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_LS->setObjectName(QStringLiteral("horizontalLayout_LS"));
-        horizontalLayout_LS->setContentsMargins(0, 0, 0, 0);
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        label_2 = new QLabel(widget);
-        label_2->setObjectName(QStringLiteral("label_2"));
+        label_name = new QLabel(Widget);
+        label_name->setObjectName(QStringLiteral("label_name"));
 
-        horizontalLayout_3->addWidget(label_2);
+        horizontalLayout_3->addWidget(label_name);
 
-        lineEdit_name = new QLineEdit(widget);
+        lineEdit_name = new QLineEdit(Widget);
         lineEdit_name->setObjectName(QStringLiteral("lineEdit_name"));
 
         horizontalLayout_3->addWidget(lineEdit_name);
@@ -135,12 +126,12 @@ public:
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setSpacing(6);
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        label_3 = new QLabel(widget);
-        label_3->setObjectName(QStringLiteral("label_3"));
+        label_pwd = new QLabel(Widget);
+        label_pwd->setObjectName(QStringLiteral("label_pwd"));
 
-        horizontalLayout_5->addWidget(label_3);
+        horizontalLayout_5->addWidget(label_pwd);
 
-        lineEdit_pwd = new QLineEdit(widget);
+        lineEdit_pwd = new QLineEdit(Widget);
         lineEdit_pwd->setObjectName(QStringLiteral("lineEdit_pwd"));
 
         horizontalLayout_5->addWidget(lineEdit_pwd);
@@ -154,12 +145,12 @@ public:
         verticalLayout_5 = new QVBoxLayout();
         verticalLayout_5->setSpacing(6);
         verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
-        pushButton_login = new QPushButton(widget);
+        pushButton_login = new QPushButton(Widget);
         pushButton_login->setObjectName(QStringLiteral("pushButton_login"));
 
         verticalLayout_5->addWidget(pushButton_login);
 
-        pushButton_signup = new QPushButton(widget);
+        pushButton_signup = new QPushButton(Widget);
         pushButton_signup->setObjectName(QStringLiteral("pushButton_signup"));
 
         verticalLayout_5->addWidget(pushButton_signup);
@@ -167,26 +158,24 @@ public:
 
         horizontalLayout_LS->addLayout(verticalLayout_5);
 
-        widget1 = new QWidget(Widget);
-        widget1->setObjectName(QStringLiteral("widget1"));
-        widget1->setGeometry(QRect(9, 220, 512, 321));
-        verticalLayout_6 = new QVBoxLayout(widget1);
+
+        gridLayout->addLayout(horizontalLayout_LS, 0, 1, 1, 1);
+
+        verticalLayout_6 = new QVBoxLayout();
         verticalLayout_6->setSpacing(6);
-        verticalLayout_6->setContentsMargins(11, 11, 11, 11);
         verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
-        verticalLayout_6->setContentsMargins(0, 0, 0, 0);
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setSpacing(6);
         horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        label = new QLabel(widget1);
-        label->setObjectName(QStringLiteral("label"));
+        label_userid = new QLabel(Widget);
+        label_userid->setObjectName(QStringLiteral("label_userid"));
 
-        horizontalLayout->addWidget(label);
+        horizontalLayout->addWidget(label_userid);
 
-        lineEdit_userID = new QLineEdit(widget1);
+        lineEdit_userID = new QLineEdit(Widget);
         lineEdit_userID->setObjectName(QStringLiteral("lineEdit_userID"));
 
         horizontalLayout->addWidget(lineEdit_userID);
@@ -197,16 +186,16 @@ public:
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setSpacing(6);
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_search = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_4->addItem(horizontalSpacer);
+        horizontalLayout_4->addItem(horizontalSpacer_search);
 
-        checkBox_test = new QCheckBox(widget1);
+        checkBox_test = new QCheckBox(Widget);
         checkBox_test->setObjectName(QStringLiteral("checkBox_test"));
 
         horizontalLayout_4->addWidget(checkBox_test);
 
-        pushButton_rec = new QPushButton(widget1);
+        pushButton_rec = new QPushButton(Widget);
         pushButton_rec->setObjectName(QStringLiteral("pushButton_rec"));
 
         horizontalLayout_4->addWidget(pushButton_rec);
@@ -217,7 +206,7 @@ public:
 
         verticalLayout_6->addLayout(horizontalLayout_6);
 
-        tabWidget = new QTabWidget(widget1);
+        tabWidget = new QTabWidget(Widget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         tab = new QWidget();
         tab->setObjectName(QStringLiteral("tab"));
@@ -347,6 +336,33 @@ public:
 
         verticalLayout_6->addWidget(tabWidget);
 
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setSpacing(6);
+        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        horizontalSpacer_rate = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_7->addItem(horizontalSpacer_rate);
+
+        doubleSpinBox_rating = new QDoubleSpinBox(Widget);
+        doubleSpinBox_rating->setObjectName(QStringLiteral("doubleSpinBox_rating"));
+        doubleSpinBox_rating->setMinimum(0.5);
+        doubleSpinBox_rating->setMaximum(5);
+        doubleSpinBox_rating->setSingleStep(0.5);
+        doubleSpinBox_rating->setValue(4);
+
+        horizontalLayout_7->addWidget(doubleSpinBox_rating);
+
+        pushButton_rate = new QPushButton(Widget);
+        pushButton_rate->setObjectName(QStringLiteral("pushButton_rate"));
+
+        horizontalLayout_7->addWidget(pushButton_rate);
+
+
+        verticalLayout_6->addLayout(horizontalLayout_7);
+
+
+        gridLayout->addLayout(verticalLayout_6, 1, 0, 1, 2);
+
 
         retranslateUi(Widget);
 
@@ -360,13 +376,11 @@ public:
     {
         Widget->setWindowTitle(QApplication::translate("Widget", "Widget", Q_NULLPTR));
         pushButton_conn->setText(QApplication::translate("Widget", "\350\277\236\346\216\245\346\234\215\345\212\241\345\231\250", Q_NULLPTR));
-        label_sim->setText(QString());
-        pushButton_extra->setText(QApplication::translate("Widget", "\345\261\225\345\274\200\345\205\250\351\203\250\346\237\245\350\257\242", Q_NULLPTR));
-        label_2->setText(QApplication::translate("Widget", "Name:", Q_NULLPTR));
-        label_3->setText(QApplication::translate("Widget", "pwd:", Q_NULLPTR));
+        label_name->setText(QApplication::translate("Widget", "Name:", Q_NULLPTR));
+        label_pwd->setText(QApplication::translate("Widget", "pwd:", Q_NULLPTR));
         pushButton_login->setText(QApplication::translate("Widget", "Login", Q_NULLPTR));
         pushButton_signup->setText(QApplication::translate("Widget", "Signup", Q_NULLPTR));
-        label->setText(QApplication::translate("Widget", "UserID:", Q_NULLPTR));
+        label_userid->setText(QApplication::translate("Widget", "UserID:", Q_NULLPTR));
         checkBox_test->setText(QApplication::translate("Widget", "Debug", Q_NULLPTR));
         pushButton_rec->setText(QApplication::translate("Widget", "Search", Q_NULLPTR));
         label_Ult->setText(QApplication::translate("Widget", "\346\234\200\347\273\210\347\211\210\357\274\232\345\260\206\346\211\200\346\234\211\345\205\203\350\267\257\345\276\204\350\256\241\347\256\227\345\207\272\347\232\204\347\233\270\344\274\274\345\272\246\345\212\240\346\235\203\345\271\263\345\235\207\343\200\202", Q_NULLPTR));
@@ -409,6 +423,7 @@ public:
         QTableWidgetItem *___qtablewidgetitem14 = tableWidget_UMUMGM->horizontalHeaderItem(2);
         ___qtablewidgetitem14->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_5), QApplication::translate("Widget", "UMUMGM", Q_NULLPTR));
+        pushButton_rate->setText(QApplication::translate("Widget", "Rate the selected one!", Q_NULLPTR));
     } // retranslateUi
 
 };

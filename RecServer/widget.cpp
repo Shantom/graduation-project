@@ -54,7 +54,7 @@ void Widget::readyMsg(QTcpSocket * socket,QByteArray msg)
             info+=user;
             if(isDebug)
                 info+=QString("\n\t(测试用集)");
-             recOnUser(isDebug,user);
+            recOnUser(isDebug,user);
             handler.sendMovies(socket,errorType,moviesRes);
             info+=QString("\n\t错误信息：");
             info+=errorStr;
