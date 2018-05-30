@@ -29,6 +29,8 @@ private slots:
 
     void on_pushButton_signup_clicked();
 
+    void on_pushButton_rate_clicked();
+
 private:
     Ui::Widget *ui;
     QTcpSocket * socket;

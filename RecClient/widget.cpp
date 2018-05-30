@@ -185,6 +185,11 @@ void Widget::receiveData()
         QMessageBox::critical(this,"失败","用户名已存在");
         return;
     }
+    else if(info==7)
+    {
+        QMessageBox::information(this,"成功","评分成功");
+        return;
+    }
 
     for(int i=0;i<5;i++)
     {
@@ -253,5 +258,24 @@ void Widget::on_pushButton_signup_clicked()
     password = (QString)QCryptographicHash::hash(password.toLatin1(),
                                                  QCryptographicHash::Md5).toHex().toUpper();
     outStream<<QString("signup")<<name<<password;
+    socket->write(datagram);
+}
+
+void Widget::on_pushButton_rate_clicked()
+{
+    int currentTab=ui->tabWidget->currentIndex();
+    QTableWidget * table=tables[currentTab];
+    int row=table->currentRow();
+    if(row==-1){
+        QMessageBox::information(this,"Info","Please select one.");
+        return;
+    }
+    QString movieID=table->item(row,0)->text();
+    double rating=ui->doubleSpinBox_rating->value();
+    QString userID=ui->lineEdit_userID->text();
+
+    QByteArray datagram;//datagram to send
+    QDataStream outStream(&datagram,QIODevice::ReadWrite);
+    outStream<<QString("rating")<<userID<<movieID<<rating;
     socket->write(datagram);
 }

@@ -81,6 +81,13 @@ void Widget::readyMsg(QTcpSocket * socket,QByteArray msg)
                 handler.response(socket,6);
             }
         }
+        else if(type=="rating"){
+            QString userID,movieID;
+            double rating;
+            inStream>>userID>>movieID>>rating;
+            database->update(userID,movieID,rating);
+            handler.response(socket,7);
+        }
     }
 }
 

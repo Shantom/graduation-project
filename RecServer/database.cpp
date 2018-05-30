@@ -48,3 +48,25 @@ bool Database::signup(QString username, QString password)
             return true;
         }
 }
+
+bool Database::update(QString userID, QString movieID, double rating)
+{
+    QSqlQuery query;
+    query.exec(QString("SELECT * FROM ratings WHERE userID = '%1' and movieID = '%2'").arg(userID).arg(movieID));
+    if(query.next()){
+        query.prepare( QString("UPDATE ratings set rating= %1 WHERE userID = '%2' "
+                       "and movieID = '%3'").arg(rating).arg(userID).arg(movieID));
+        query.addBindValue(QVariant(userID));
+        query.addBindValue(QVariant(movieID));
+        query.addBindValue(QVariant(rating));
+        query.exec();
+    }
+    else{
+        query.prepare( "INSERT INTO ratings (userID, movieID, rating) values(?,?,?)");
+        query.addBindValue(QVariant(userID));
+        query.addBindValue(QVariant(movieID));
+        query.addBindValue(QVariant(rating));
+        query.exec();
+    }
+    return true;
+}
