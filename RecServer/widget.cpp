@@ -13,6 +13,7 @@ Widget::Widget(QWidget *parent) :
 
     ui->checkBox_debug->setChecked(true);
     connect(&handler,&Communication::message,this,&Widget::readyMsg);
+    connect(&logger,&Log::writeLogs,this,&Widget::writeLogs);
     resultFiles.append("../AlgoTest/out/recResultsUlt.csv");
     resultFiles.append("../AlgoTest/out/recResultsUMGM.csv");
     resultFiles.append("../AlgoTest/out/recResultsUMUM.csv");
@@ -35,11 +36,10 @@ void Widget::readyMsg(QTcpSocket * socket,QByteArray msg)
 {
     QString addr=socket->peerAddress().toString();
     QString port=QString::number(socket->peerPort());
-    QString info=addr+":"+port;
+    QString source=addr+":"+port;
     if(msg=="new")
     {
-        info+=QString(" 新用户接入\n");
-        ui->textBrowser->append(info);
+        logger.log_new(source);
     }
     else
     {
@@ -50,16 +50,9 @@ void Widget::readyMsg(QTcpSocket * socket,QByteArray msg)
             QString user;
             bool isDebug;
             inStream>>user>>isDebug;
-            info+=QString(" 请求推荐\n\t用户ID：");
-            info+=user;
-            if(isDebug)
-                info+=QString("\n\t(测试用集)");
             int ok=recOnUser(isDebug,user);
             handler.sendMovies(socket,errorType,moviesRes);
-            info+=QString("\n\t错误信息：");
-            info+=errorStr;
-            info+=QString("\n");
-            ui->textBrowser->append(info);
+            logger.log_query(source,user,isDebug,errorStr);
             if(ok==2)
             {
                 QString randUser=QString("%1").arg(qrand()%671);
@@ -77,6 +70,8 @@ void Widget::readyMsg(QTcpSocket * socket,QByteArray msg)
             }else{
                 handler.response(socket,4,"");
             }
+            logger.log_login(source,name,id,pwd);
+
         }
         else if(type=="signup"){
             QString name,pwd;
@@ -87,6 +82,7 @@ void Widget::readyMsg(QTcpSocket * socket,QByteArray msg)
             }else{
                 handler.response(socket,6,"");
             }
+            logger.log_signup(source,name,id,pwd);
         }
         else if(type=="rating"){
             QString userID,movieID;
@@ -94,8 +90,14 @@ void Widget::readyMsg(QTcpSocket * socket,QByteArray msg)
             inStream>>userID>>movieID>>rating;
             database->update(userID,movieID,rating);
             handler.response(socket,7,"");
+            logger.log_rating(source,userID,movieID,rating);
         }
     }
+}
+
+void Widget::writeLogs(QString info)
+{
+    ui->textBrowser->append(info);
 }
 
 void Widget::on_pushButton_start_clicked()

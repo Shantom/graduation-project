@@ -77,7 +77,6 @@ public:
     QLabel *label_UMUMGM;
     QTableWidget *tableWidget_UMUMGM;
     QHBoxLayout *horizontalLayout_7;
-    QLabel *label_rand;
     QSpacerItem *horizontalSpacer_rate;
     QLabel *label_rate;
     QDoubleSpinBox *doubleSpinBox_rating;
@@ -341,11 +340,6 @@ public:
         horizontalLayout_7 = new QHBoxLayout();
         horizontalLayout_7->setSpacing(6);
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
-        label_rand = new QLabel(Widget);
-        label_rand->setObjectName(QStringLiteral("label_rand"));
-
-        horizontalLayout_7->addWidget(label_rand);
-
         horizontalSpacer_rate = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_7->addItem(horizontalSpacer_rate);
@@ -435,7 +429,6 @@ public:
         QTableWidgetItem *___qtablewidgetitem14 = tableWidget_UMUMGM->horizontalHeaderItem(2);
         ___qtablewidgetitem14->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_5), QApplication::translate("Widget", "UMUMGM", Q_NULLPTR));
-        label_rand->setText(QString());
         label_rate->setText(QApplication::translate("Widget", "After enjoying a  movie, you can rate it here.", Q_NULLPTR));
         pushButton_rate->setText(QApplication::translate("Widget", "Rate the selected one!", Q_NULLPTR));
     } // retranslateUi

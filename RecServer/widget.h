@@ -10,6 +10,7 @@
 #include "movie.h"
 #include "communication.h"
 #include "database.h"
+#include "log.h"
 
 namespace Ui {
 class Widget;
@@ -26,6 +27,7 @@ public:
 
 public slots:
     void readyMsg(QTcpSocket *socket, QByteArray msg);
+    void writeLogs(QString info);
 
 private slots:
     void on_pushButton_start_clicked();
@@ -34,6 +36,7 @@ private slots:
 private:
     Ui::Widget *ui;
     Communication handler;
+    Log logger;
     Database * database;
     QList<QList<Movie>> moviesRes;
     QString errorStr;

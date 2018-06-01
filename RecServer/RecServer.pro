@@ -28,13 +28,15 @@ SOURCES += \
         widget.cpp \
         movie.cpp \
     communication.cpp \
-    database.cpp
+    database.cpp \
+    log.cpp
 
 HEADERS += \
         widget.h \
         movie.h \
     communication.h \
-    database.h
+    database.h \
+    log.h
 
 FORMS += \
         widget.ui
