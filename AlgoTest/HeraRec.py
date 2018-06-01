@@ -1,5 +1,6 @@
 import sys
 import numpy as np
+import pymysql
 
 T = ''
 if len(sys.argv) >= 2:
@@ -10,6 +11,8 @@ if len(sys.argv) >= 2:
 class HeraRec:
     def __init__(self):
         self.S = []
+        self.db = pymysql.connect("localhost", "root", "sushe322", "RecommenderServer")
+        self.cursor = self.db.cursor()
         self.movieIDs = []
         self.userIDs = []
         self.movieTitle = {}
@@ -17,67 +20,47 @@ class HeraRec:
         self.userRatings = {}
         self.metapaths = ['UMGM', 'UMUM', 'UMGMUM', 'UMUMGM', 'Ult']
 
-    def loadMovies(self):
-        with open('../AlgoTest/in/movies' + T + '.csv') as movies:
-            movies.readline()
-            for line in movies:
-                movieID = line.split(',')[0]
-                title = line.split(',')[1]
-                genres = line.split(',')[2]
-                genres = genres.strip().split('|')
-                self.movieIDs.append(movieID)
-                self.movieTitle[movieID] = title
-                self.movieGenre[movieID] = genres
-
-    def loadUsers(self):
-        with open('../AlgoTest/in/ratings' + T + '.csv') as users:
-            users.readline()
-            for line in users:
-                userID = line.split(',')[0]
-                movieID = line.split(',')[1]
-                rating = line.split(',')[2]
-                if userID not in self.userRatings:
-                    self.userIDs.append(userID)
-                    self.userRatings[userID] = {}
-                self.userRatings[userID][movieID] = rating
-
     def process(self, user, path):
-        if user not in self.userIDs:
+        sql = 'SELECT DISTINCT(S.movieID),M.name,S.sim FROM similarity AS S INNER JOIN movies AS M ' \
+              'WHERE S.movieID = M.movieID AND S.userID=%s AND S.metapath=\'%s\'' % (user, path)
+
+        self.cursor.execute(sql)
+
+        self.db.commit()
+        if self.cursor.rowcount == 0:
             print('user ' + user + ' does not exist!')
             open('../AlgoTest/out/recResultsUlt' + T + '.csv', 'w')
             return
 
-        userIndex = self.userIDs.index(user)
+        movieSims = list(self.cursor.fetchall())
+        movieSims = list(map(list, movieSims))
 
-        simils = []
-        with open('../AlgoTest/out/output' + path + T + '.csv') as file:
-            file.readline()
-            for i in range(userIndex):
-                file.readline()
-            simils = file.readline().split(',')[1:]
+        sql = 'select movieID from ratings where userID=%s' % user
+        self.cursor.execute(sql)
+        ratedMovies = [x[0] for x in self.cursor.fetchall()]
 
-        simils = list(map(float, simils))
-        simils = np.array(simils)
-        for i, movie in enumerate(self.movieIDs):
-            if movie in self.userRatings[user].keys():
-                simils[i] = 0
-        indexs = simils.argsort()[-5:][::-1]  # 取最大的5个由大到小
+        for item in movieSims:
+            if item[0] in ratedMovies:
+                item[2] = 0
+
+        movieSims = sorted(movieSims, key=lambda x: x[2])[-5:][::-1]  # 取最大的5个由大到小
 
         result = []
-        for index in indexs:
-            if simils[index] != 0:
-                result.append([self.movieIDs[index], self.movieTitle[self.movieIDs[index]]
-                                  , self.movieGenre[self.movieIDs[index]]])
-        print(result)
+        for movieSim in movieSims:
+            if movieSim[2] != 0:
+                sql = 'select genre from movies WHERE movieID=%d' % movieSim[0]
+                self.cursor.execute(sql)
+                genres = [item[0] for item in self.cursor.fetchall()]
+                result.append([movieSim[0], movieSim[1], genres])
+        if path=='UMGM':
+            print(result)
 
         with open('../AlgoTest/out/recResults' + path + T + '.csv', 'w') as file:
             for item in result:
-                file.write(item[0] + ',' + item[1] + ',')
+                file.write(str(item[0]) + ',' + item[1] + ',')
                 file.write('|'.join(item[2]) + '\n')
 
     def start(self, user):
-        self.loadMovies()
-        self.loadUsers()
         for path in self.metapaths:
             self.process(user, path)
 

@@ -1,6 +1,90 @@
 import sys
 import numpy as np
 import datetime
+import pymysql
+
+
+class Database:
+    def __init__(self):
+        self.db = pymysql.connect("localhost", "root", "sushe322", "RecommenderServer")
+        self.cursor = self.db.cursor()
+        self.movieIDs = []
+        self.genres = []
+        self.userIDs = []
+        self.movieTransGenre = None
+        self.userTransMovie = None
+
+    def selectFromMovies(self):
+        # 读取movie并排序
+        sql = 'SELECT DISTINCT(movieID) FROM movies'
+        self.cursor.execute(sql)
+        movieCount = self.cursor.rowcount
+        for item in self.cursor.fetchall():
+            self.movieIDs.append(item[0])
+        self.movieIDs.sort()
+        self.db.commit()
+        print('movie loaded')
+
+        # 读取genre并排序
+        sql = 'SELECT DISTINCT(genre) FROM movies'
+        self.cursor.execute(sql)
+        genreCount = self.cursor.rowcount
+        for item in self.cursor.fetchall():
+            self.genres.append(item[0])
+        self.genres.sort()
+        self.db.commit()
+        print('genre loaded')
+
+        # 创建movie到genre的邻接矩阵
+        self.movieTransGenre = np.zeros((movieCount, genreCount))
+        sql = 'SELECT movieID, name, genre FROM movies'
+        self.cursor.execute(sql)
+        movieType = self.cursor.fetchall()
+        for item in movieType:
+            movieID = self.movieIDs.index(item[0])
+            genreID = self.genres.index(item[2])
+            self.movieTransGenre[movieID, genreID] = 1  # 所有电影到类别的权值均设为1.0
+            self.movieTransGenre = np.mat(self.movieTransGenre)
+        self.db.commit()
+        print('MG loaded, whose shape is ', self.movieTransGenre.shape)
+
+    def selectFromRatings(self):
+        # 读取user并排序
+        sql = 'SELECT DISTINCT(userID) FROM ratings'
+        self.cursor.execute(sql)
+        userCount = self.cursor.rowcount
+        for item in self.cursor.fetchall():
+            self.userIDs.append(item[0])
+        self.userIDs.sort()
+        self.db.commit()
+        print('user loaded')
+
+        movieCount = len(self.movieIDs)
+        # 创建user到movie的邻接矩阵
+        self.userTransMovie = np.zeros((userCount, movieCount))
+        sql = 'SELECT userID, movieID, rating FROM ratings'
+        self.cursor.execute(sql)
+        userRatings = self.cursor.fetchall()
+        for item in userRatings:
+            userID = self.userIDs.index(item[0])
+            movieID = self.movieIDs.index(item[1])
+            rating = item[2]
+            self.userTransMovie[userID, movieID] = rating
+            self.userTransMovie = np.mat(self.userTransMovie)
+        self.db.commit()
+        print('UM loaded, whose shape is ', self.userTransMovie.shape)
+
+    def updateSim(self, S, path):
+        for uID in range(len(self.userIDs)):
+            for mID in range(len(self.movieIDs)):
+                sim = S[uID, mID]
+                sql = 'update similarity set sim = %f where userID=%d and movieID = %d ' \
+                      'and metapath=\'%s\'' \
+                      % (sim, self.userIDs[uID], self.movieIDs[mID], path)
+                self.cursor.execute(sql)
+            print(self.userIDs[uID], ' complete')
+            self.db.commit()
+
 
 T = ''
 if len(sys.argv) >= 2:
@@ -16,6 +100,7 @@ class HeraSim:
         self.genreIDs = []  # 存放genreID
         self.userIDs = []  # 存放userID
         self.metapaths = ['UMGM', 'UMUM', 'UMGMUM', 'UMUMGM']  # 四种用到的元路径
+        self.database = Database()
 
     @staticmethod
     def normalize(matrix):  # 矩阵的行归一化
@@ -28,69 +113,25 @@ class HeraSim:
                     matrix_copy[row, col] /= rowSum
         return matrix_copy
 
-    def leadInMovies(self):  # 将电影和类别的链接数据导入，并返回电影到类别的邻接矩阵
-        genreSet = set()
-        movieType = []
-        with open('../AlgoTest/in/movies' + T + '.csv') as movies:
-            movies.readline()
-            for line in movies:
-                movieID = line.split(',')[0]
-                genres = line.split(',')[2]
-                genres = genres.strip().split('|')
-                for genre in genres:
-                    movieType.append([movieID, genre])
-                self.movieIDs.append(movieID)
-                genreSet.update(genres)
-
-        movieCount = len(self.movieIDs)
-        self.genreIDs = sorted(list(genreSet))
-        genreCount = len(self.genreIDs)
-        print(genreCount)
-        movieTransGenre = np.zeros((movieCount, genreCount))
-        for item in movieType:
-            movieID = self.movieIDs.index(item[0])
-            genreID = self.genreIDs.index(item[1])
-            movieTransGenre[movieID, genreID] = 1  # 所有电影到类别的权值均设为1.0
-        movieTransGenre = np.mat(movieTransGenre)
-        return movieTransGenre
-
-    def leadInRatings(self):  # 将用户和电影的链接数据导入，并返回用户到电影的邻接矩阵
-        userRatings = []
-        with open('../AlgoTest/in/ratings' + T + '.csv') as ratings:
-            ratings.readline()
-            for line in ratings:
-                userID = line.split(',')[0]
-                movieID = line.split(',')[1]
-                rating = line.split(',')[2]
-                if userID not in self.userIDs:
-                    self.userIDs.append(userID)
-                userRatings.append([userID, movieID, rating])
-        userCount = len(self.userIDs)
-        movieCount = len(self.movieIDs)
-
-        userTransMovie = np.zeros((userCount, movieCount))
-        for item in userRatings:
-            userID = self.userIDs.index(item[0])
-            movieID = self.movieIDs.index(item[1])
-            rating = float(item[2])
-            userTransMovie[userID, movieID] = rating
-        userTransMovie = np.mat(userTransMovie)
-        return userTransMovie
-
     def preProcess(self):  # 相似度计算前的预处理
-        self.W_MG = self.leadInMovies()
+        self.database.selectFromMovies()
+        self.database.selectFromRatings()
+        self.W_MG = self.database.movieTransGenre
         self.W_GM = self.W_MG.T
         self.U_MG = self.normalize(self.W_MG)  # 邻接矩阵行归一化转成概率矩阵
         self.U_GM = self.normalize(self.W_GM)
+        print('MG normalized')
 
-        self.W_UM = self.leadInRatings()
+        self.W_UM = self.database.userTransMovie
         self.W_MU = self.W_UM.T
         self.U_UM = self.normalize(self.W_UM)  # 邻接矩阵行归一化转成概率矩阵
         self.U_MU = self.normalize(self.W_MU)
+        print('UM normalized')
 
-        self.movieCount = len(self.movieIDs)
-        self.genreCount = len(self.genreIDs)
-        self.userCount = len(self.userIDs)
+        self.movieCount = len(self.database.movieIDs)
+        self.genreCount = len(self.database.genres)
+        self.userCount = len(self.database.userIDs)
+        print('preprocess completed')
 
     def process(self, path='UMGM'):
         BRMs = [np.mat(np.eye(self.movieCount))]  # 反向随机游走所需要的可达矩阵列表
@@ -125,26 +166,15 @@ class HeraSim:
         S /= len(path)
         return S
 
-    def output(self, S, path):  # 将相似度矩阵输出到文件中
-        with open('../AlgoTest/out/output' + path + T + '.csv', 'w') as file:
-            movies = [''] + H.movieIDs
-            movieStr = ','.join(movies)
-            file.write(movieStr + '\n')
-            for i in range(len(H.userIDs)):
-                ratings = [H.userIDs[i]] + S[i].tolist()[0]
-                ratings = list(map(str, ratings))
-                ratingStr = ','.join(ratings)
-                file.write(ratingStr + '\n')
-
     def start(self):
         self.preProcess()
 
         S = []
         for path in self.metapaths:
             S.append(self.process(path))
-            self.output(S[-1], path)
+            self.database.updateSim(S[-1], path)  # 将相似度矩阵输出数据库中
         Sult = sum(S) / len(S)  # 这里暂时先将所有元路径权值视为相等
-        self.output(Sult, 'Ult')
+        self.database.updateSim(Sult, 'Ult')
 
 
 H = HeraSim()
