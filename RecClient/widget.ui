@@ -34,7 +34,7 @@
          <item>
           <widget class="QLabel" name="label_name">
            <property name="text">
-            <string>Name:</string>
+            <string>ID/Name:</string>
            </property>
           </widget>
          </item>
@@ -122,7 +122,7 @@
          <item>
           <widget class="QPushButton" name="pushButton_rec">
            <property name="text">
-            <string>Search</string>
+            <string>Today's Recommendation</string>
            </property>
           </widget>
          </item>
@@ -305,6 +305,13 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
+        <widget class="QLabel" name="label_rand">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="horizontalSpacer_rate">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -316,6 +323,13 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_rate">
+         <property name="text">
+          <string>After enjoying a  movie, you can rate it here.</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_rating">

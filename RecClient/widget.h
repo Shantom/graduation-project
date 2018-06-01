@@ -31,6 +31,8 @@ private slots:
 
     void on_pushButton_rate_clicked();
 
+    void on_lineEdit_name_textEdited(const QString &arg1);
+
 private:
     Ui::Widget *ui;
     QTcpSocket * socket;

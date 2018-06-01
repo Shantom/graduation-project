@@ -23,12 +23,12 @@ void Communication::sendMovies(QTcpSocket *socket, int error, QList<QList<Movie>
     socket->write(datagram);
 }
 
-void Communication::response(QTcpSocket *socket, int info)
+void Communication::response(QTcpSocket *socket, int info, QString data)
 {
     QByteArray datagram;//datagram to send
     QDataStream outStream(&datagram,QIODevice::ReadWrite);
 
-    outStream<<info;//类型
+    outStream<<info<<data;//类型
     socket->write(datagram);
 }
 

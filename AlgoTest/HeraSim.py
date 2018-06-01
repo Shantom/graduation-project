@@ -45,6 +45,7 @@ class HeraSim:
         movieCount = len(self.movieIDs)
         self.genreIDs = sorted(list(genreSet))
         genreCount = len(self.genreIDs)
+        print(genreCount)
         movieTransGenre = np.zeros((movieCount, genreCount))
         for item in movieType:
             movieID = self.movieIDs.index(item[0])

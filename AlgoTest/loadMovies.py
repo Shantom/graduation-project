@@ -6,14 +6,16 @@ db = pymysql.connect("localhost", "root", "sushe322", "RecommenderServer", chars
 
 def insert(id, name, genre):
     cursor = db.cursor()
-    sql = 'insert into movies VALUES ("%s","%s","%s")' % (id, name, genre)
+    sql = 'insert into moviesT VALUES ("%s","%s","%s")' % (id, name, genre)
     cursor.execute(sql)
     cursor.close()
 
 
 ids = set()
 names = set()
-with open('in/movies.csv') as file:
+genreset = set()
+genreset_stripped = set()
+with open('in/moviesT.csv') as file:
     file.readline()
     for line in file:
         movie = line.split(',')
@@ -26,13 +28,17 @@ with open('in/movies.csv') as file:
         genres = movie[2].split('|')
 
         for genre in genres:
-            insert(id, name, genre)
-            db.commit()
-            # try:
-            #
-            # except:
-            #     db.rollback()
+            genreset.add(genre)
+            genreset_stripped.add(genre.strip())
+
+            try:
+                insert(id, name, genre.strip())
+                db.commit()
+            except:
+                db.rollback()
 
 print(len(ids))
 print(len(names))
+print(len(genreset))
+print(len(genreset_stripped))
 db.close()

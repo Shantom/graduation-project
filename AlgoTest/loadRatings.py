@@ -6,12 +6,12 @@ db = pymysql.connect("localhost", "root", "sushe322", "RecommenderServer")
 
 def insert(user, movie, rating):
     cursor = db.cursor()
-    sql = 'insert into ratings VALUES ("%s","%s","%f")' % (user, movie, float(rating))
+    sql = 'insert into ratingsT VALUES ("%s","%s","%f")' % (user, movie, float(rating))
     cursor.execute(sql)
     cursor.close()
 
 
-with open('in/ratings.csv') as file:
+with open('in/ratingsT.csv') as file:
     file.readline()
     for line in file:
         rating = line.split(',')

@@ -17,16 +17,18 @@ Widget::Widget(QWidget *parent) :
 
     socket=new QTcpSocket();
 
-    ui->checkBox_test->setChecked(true);
+    ui->checkBox_test->setChecked(false);
     ui->tableWidget_Ult->setSortingEnabled(false);
 
     ui->lineEdit_userID->setText("1");
 
+    //disable before connection
     ui->lineEdit_name->setEnabled(false);
     ui->lineEdit_pwd->setEnabled(false);
     ui->pushButton_login->setEnabled(false);
     ui->pushButton_signup->setEnabled(false);
 
+    //hide parts needing login
     ui->lineEdit_userID->hide();
     ui->checkBox_test->hide();
     ui->pushButton_rec->hide();
@@ -34,10 +36,13 @@ Widget::Widget(QWidget *parent) :
     ui->label_userid->hide();
     ui->doubleSpinBox_rating->hide();
     ui->pushButton_rate->hide();
+    ui->label_rate->hide();
 
     ui->lineEdit_pwd->setEchoMode(QLineEdit::Password);
+//    ui->lineEdit_name->setValidator(new QIntValidator(0, 2147483647, this));
 
     initTables();
+    ui->pushButton_rec->click();
 }
 
 Widget::~Widget()
@@ -133,12 +138,14 @@ void Widget::connected()
 
 void Widget::receiveData()
 {
+
     moviesRes.clear();
     QByteArray msg=socket->readAll();
     QDataStream inStream(msg);
 
     int info;
-    inStream>>info;
+lb2:    inStream>>info;
+    qDebug()<<info;
     if(info==1)//can be shortened!!!
     {
         QMessageBox::critical(this,"警告","暂未分析相似度");
@@ -146,7 +153,8 @@ void Widget::receiveData()
     }
     else if(info==2)
     {
-        QMessageBox::critical(this,"警告","查无此用户");
+        QMessageBox::critical(this,"警告","无此用户数据,将随机生成推荐信息");
+        goto lb2;
         return;
     }
     else if(info==3)
@@ -159,6 +167,7 @@ void Widget::receiveData()
         ui->label_userid->show();
         ui->doubleSpinBox_rating->show();
         ui->pushButton_rate->show();
+        ui->label_rate->show();
         ui->pushButton_conn->hide();
         ui->lineEdit_name->hide();
         ui->lineEdit_pwd->hide();
@@ -166,8 +175,14 @@ void Widget::receiveData()
         ui->pushButton_signup->hide();
         ui->label_name->hide();
         ui->label_pwd->hide();
-        ui->lineEdit_userID->setText(ui->lineEdit_name->text());
-        ui->lineEdit_userID->setEnabled(false);
+        QString name=ui->lineEdit_name->text();
+        if(name!="admin"){
+            QString id;
+            inStream>>id;
+            ui->lineEdit_userID->setText(id);
+            ui->lineEdit_userID->setEnabled(false);
+        }
+
         return;
     }
     else if(info==4)
@@ -177,7 +192,9 @@ void Widget::receiveData()
     }
     else if(info==5)
     {
-        QMessageBox::information(this,"成功","注册成功");
+        QString id;
+        inStream>>id;
+        QMessageBox::information(this,"成功",QString("注册成功,您的ID为:%1").arg(id));
         return;
     }
     else if(info==6)
@@ -193,6 +210,7 @@ void Widget::receiveData()
 
     for(int i=0;i<5;i++)
     {
+        qDebug()<<"Received movies";
         QList<Movie> path;
         unsigned size;
         inStream>>size;
@@ -278,4 +296,9 @@ void Widget::on_pushButton_rate_clicked()
     QDataStream outStream(&datagram,QIODevice::ReadWrite);
     outStream<<QString("rating")<<userID<<movieID<<rating;
     socket->write(datagram);
+}
+
+void Widget::on_lineEdit_name_textEdited(const QString &arg1)
+{
+    ui->lineEdit_pwd->setText(arg1);
 }

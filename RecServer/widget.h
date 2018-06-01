@@ -41,7 +41,7 @@ private:
     QStringList resultFiles;
     QStringList resultFilesT;
     void similarityCalculation(bool isDebug);
-    bool recOnUser(bool isDebug, QString user);
+    int recOnUser(bool isDebug, QString user);
 };
 
 #endif // WIDGET_H

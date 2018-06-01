@@ -22,31 +22,50 @@ Database::Database()
             exit(0);
 }
 
-bool Database::login(QString username, QString password)
+int Database::login(QString username, QString password)
 {
     QSqlQuery query;
     query.exec(QString("SELECT * FROM users WHERE name = '%1' "
                        "AND password = '%2'").arg(username,password));
     if(query.next())
-        return true;
+    {
+        int userID=query.value("userID").toInt();
+        return userID;
+    }
     else
-        return false;
-}
-
-bool Database::signup(QString username, QString password)
-{
-    QSqlQuery query;
-        query.exec(QString("SELECT * FROM users WHERE name = '%1'").arg(username));
+    {
+        if(username.toInt()==0)
+            return 0;
+        query.exec(QString("SELECT * FROM users WHERE userID = '%1' "
+                           "AND password = '%2'").arg(username.toInt()).arg(password));
         if(query.next())
-            return false;
+            return username.toInt();
         else
         {
-            query.prepare( "INSERT INTO users (name, password) values(?,?)");
-            query.addBindValue(QVariant(username));
-            query.addBindValue(QVariant(password));
-            query.exec();
-            return true;
+            return 0;
         }
+    }
+
+}
+
+int Database::signup(QString name, QString password)
+{
+    QSqlQuery query;
+    query.exec(QString("SELECT COUNT(*) from users"));
+    query.next();
+    int count=query.value(0).toInt();
+    query.exec(QString("SELECT * FROM users WHERE name = '%1'").arg(name));
+    if(query.next())
+        return 0;
+    else
+    {
+        query.prepare( "INSERT INTO users (userID, name, password) values(?,?,?)");
+        query.addBindValue(QVariant(count));
+        query.addBindValue(QVariant(name));
+        query.addBindValue(QVariant(password));
+        query.exec();
+        return count;
+    }
 }
 
 bool Database::update(QString userID, QString movieID, double rating)

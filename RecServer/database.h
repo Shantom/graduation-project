@@ -8,8 +8,8 @@ class Database
 public:
     Database();
     QSqlDatabase db;
-    bool login(QString username,QString password);
-    bool signup(QString username,QString password);
+    int login(QString username,QString password);
+    int signup(QString username,QString password);
     bool update(QString userID,QString movieID,double rating);
     QStringList allUsers();
 };

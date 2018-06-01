@@ -54,31 +54,38 @@ void Widget::readyMsg(QTcpSocket * socket,QByteArray msg)
             info+=user;
             if(isDebug)
                 info+=QString("\n\t(测试用集)");
-            recOnUser(isDebug,user);
+            int ok=recOnUser(isDebug,user);
             handler.sendMovies(socket,errorType,moviesRes);
             info+=QString("\n\t错误信息：");
             info+=errorStr;
             info+=QString("\n");
             ui->textBrowser->append(info);
+            if(ok==2)
+            {
+                QString randUser=QString("%1").arg(qrand()%671);
+                recOnUser(isDebug,randUser);
+                qDebug()<<"rand:"<<randUser<<errorType;
+                handler.sendMovies(socket,errorType,moviesRes);
+            }
         }
         else if(type=="login"){
             QString name,pwd;
             inStream>>name>>pwd;
-            bool ok=database->login(name,pwd);
-            if(ok){
-                handler.response(socket,3);
+            int id=database->login(name,pwd);
+            if(id){
+                handler.response(socket,3,QString("%1").arg(id));
             }else{
-                handler.response(socket,4);
+                handler.response(socket,4,"");
             }
         }
         else if(type=="signup"){
             QString name,pwd;
             inStream>>name>>pwd;
-            bool ok=database->signup(name,pwd);
-            if(ok){
-                handler.response(socket,5);
+            int id=database->signup(name,pwd);
+            if(id){
+                handler.response(socket,5,QString("%1").arg(id));
             }else{
-                handler.response(socket,6);
+                handler.response(socket,6,"");
             }
         }
         else if(type=="rating"){
@@ -86,7 +93,7 @@ void Widget::readyMsg(QTcpSocket * socket,QByteArray msg)
             double rating;
             inStream>>userID>>movieID>>rating;
             database->update(userID,movieID,rating);
-            handler.response(socket,7);
+            handler.response(socket,7,"");
         }
     }
 }
@@ -108,7 +115,7 @@ void Widget::similarityCalculation(bool isDebug)
     QMessageBox::information(this,"信息","相似度分析完成。");
 }
 
-bool Widget::recOnUser(bool isDebug, QString user)
+int Widget::recOnUser(bool isDebug, QString user)
 {
     moviesRes.clear();
     QList<QFile*> results;//存放推荐列表文件的指针表
@@ -139,14 +146,15 @@ bool Widget::recOnUser(bool isDebug, QString user)
             qDebug()<<"暂未分析相似度";
             errorStr=QString("暂未分析相似度");
             errorType=1;
-            return false;
+            return 1;
         }
         if(results[0]->atEnd() && i==0)
         {
             qDebug()<<"查无此用户";
             errorStr=QString("查无此用户");
             errorType=2;
-            return false;
+
+            return 2;
         }
         QList<Movie> movies;
 //        QList<Movie>* movies=new QList<Movie>;
@@ -174,7 +182,7 @@ bool Widget::recOnUser(bool isDebug, QString user)
     }
     errorStr=QString("无错误");
     errorType=0;
-    return true;
+    return 0;
 }
 
 void Widget::on_pushButton_sim_clicked()

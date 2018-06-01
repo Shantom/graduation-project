@@ -77,7 +77,9 @@ public:
     QLabel *label_UMUMGM;
     QTableWidget *tableWidget_UMUMGM;
     QHBoxLayout *horizontalLayout_7;
+    QLabel *label_rand;
     QSpacerItem *horizontalSpacer_rate;
+    QLabel *label_rate;
     QDoubleSpinBox *doubleSpinBox_rating;
     QPushButton *pushButton_rate;
 
@@ -339,9 +341,19 @@ public:
         horizontalLayout_7 = new QHBoxLayout();
         horizontalLayout_7->setSpacing(6);
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        label_rand = new QLabel(Widget);
+        label_rand->setObjectName(QStringLiteral("label_rand"));
+
+        horizontalLayout_7->addWidget(label_rand);
+
         horizontalSpacer_rate = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_7->addItem(horizontalSpacer_rate);
+
+        label_rate = new QLabel(Widget);
+        label_rate->setObjectName(QStringLiteral("label_rate"));
+
+        horizontalLayout_7->addWidget(label_rate);
 
         doubleSpinBox_rating = new QDoubleSpinBox(Widget);
         doubleSpinBox_rating->setObjectName(QStringLiteral("doubleSpinBox_rating"));
@@ -376,13 +388,13 @@ public:
     {
         Widget->setWindowTitle(QApplication::translate("Widget", "Widget", Q_NULLPTR));
         pushButton_conn->setText(QApplication::translate("Widget", "\350\277\236\346\216\245\346\234\215\345\212\241\345\231\250", Q_NULLPTR));
-        label_name->setText(QApplication::translate("Widget", "Name:", Q_NULLPTR));
+        label_name->setText(QApplication::translate("Widget", "ID/Name:", Q_NULLPTR));
         label_pwd->setText(QApplication::translate("Widget", "pwd:", Q_NULLPTR));
         pushButton_login->setText(QApplication::translate("Widget", "Login", Q_NULLPTR));
         pushButton_signup->setText(QApplication::translate("Widget", "Signup", Q_NULLPTR));
         label_userid->setText(QApplication::translate("Widget", "UserID:", Q_NULLPTR));
         checkBox_test->setText(QApplication::translate("Widget", "Debug", Q_NULLPTR));
-        pushButton_rec->setText(QApplication::translate("Widget", "Search", Q_NULLPTR));
+        pushButton_rec->setText(QApplication::translate("Widget", "Today's Recommendation", Q_NULLPTR));
         label_Ult->setText(QApplication::translate("Widget", "\346\234\200\347\273\210\347\211\210\357\274\232\345\260\206\346\211\200\346\234\211\345\205\203\350\267\257\345\276\204\350\256\241\347\256\227\345\207\272\347\232\204\347\233\270\344\274\274\345\272\246\345\212\240\346\235\203\345\271\263\345\235\207\343\200\202", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem = tableWidget_Ult->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QApplication::translate("Widget", "\347\224\265\345\275\261\345\272\217\345\217\267", Q_NULLPTR));
@@ -423,6 +435,8 @@ public:
         QTableWidgetItem *___qtablewidgetitem14 = tableWidget_UMUMGM->horizontalHeaderItem(2);
         ___qtablewidgetitem14->setText(QApplication::translate("Widget", "\347\261\273\345\210\253", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_5), QApplication::translate("Widget", "UMUMGM", Q_NULLPTR));
+        label_rand->setText(QString());
+        label_rate->setText(QApplication::translate("Widget", "After enjoying a  movie, you can rate it here.", Q_NULLPTR));
         pushButton_rate->setText(QApplication::translate("Widget", "Rate the selected one!", Q_NULLPTR));
     } // retranslateUi
 

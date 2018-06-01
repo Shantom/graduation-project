@@ -15,7 +15,7 @@ public:
     explicit Communication(QObject *parent = nullptr);
     Widget * widget;
     void sendMovies(QTcpSocket * socket,int error, QList<QList<Movie>> movieRes);
-    void response(QTcpSocket * socket, int info);
+    void response(QTcpSocket * socket, int info, QString data);
 
 signals:
     void message(QTcpSocket * socket, QByteArray msg);
